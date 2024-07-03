@@ -1,7 +1,10 @@
 import { useState } from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Home from "./routes/pages/Home"
-import About from "./routes/pages/About"
+import RegisterPage from "./routes/pages/Register"
+import Dashboard from "./routes/pages/Dashboard"
+import AdminPage from "./routes/pages/adminpage"
+import ProtectedRoute from "./routes/private/protectedRoutes"
 import NotFound from './routes/pages/404'
 
 function App() {
@@ -12,12 +15,12 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact"/>
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+          <Route path="/envios" element={<ProtectedRoute element={<AdminPage />} />} />
           <Route path="*" element={<NotFound />}/>
           </Routes>
       </Router>
-      
     </>
   )
 }
