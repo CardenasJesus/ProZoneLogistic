@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:8000/v1/api/token/';
+const API_URL = 'https://www.prozonelogistic.site/api/v1/api/token/';
 
 export const LoginFunc = async (username, password) => {
     const response = await axios.post(`${API_URL}`, { username, password });
@@ -23,7 +23,7 @@ export const getCurrentUser = () => {
     return JSON.parse(localStorage.getItem('user'));
 };
 
-{/* Register of sents */}
+{/* Register of sents */ }
 const Api_Register = '#';
 export const RegisterFunc = async (formData) => {
     const response = await axios.post(`${Api_Register}`, formData);

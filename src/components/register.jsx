@@ -31,17 +31,17 @@ const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(formData);  // Verifica los datos que se están enviando
-        axios.post("http://127.0.0.1:8000/v1/api/employees/register/", formData, {
+        axios.post('https://www.prozonelogistic.site/api/v1/api/employees/register/', formData, {
             headers: {
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => {
-            console.log('Success:', response.data);
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
+            .then(response => {
+                console.log('Success:', response.data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
     };
 
     return (
@@ -79,10 +79,10 @@ const Register = () => {
                             <label htmlFor="email_input" className="block mb-2 text-base font-medium text-gray-900 dark:text-white">Email:</label>
                             <input type="text" id="emial_input" name='email' required onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                         </div>
-                            <div className="relative z-0 w-full mb-1 group">
-                                <label htmlFor="password_input" className="block mb-2 text-base font-medium text-gray-900 dark:text-white">Password:</label>
-                                <input type="password" id="password_input" required name='password' onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                            </div>
+                        <div className="relative z-0 w-full mb-1 group">
+                            <label htmlFor="password_input" className="block mb-2 text-base font-medium text-gray-900 dark:text-white">Password:</label>
+                            <input type="password" id="password_input" required name='password' onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        </div>
                         <div className="flex items-start p-8">
                             <div className="flex items-center h-5">
                                 <p className='font-medium text-gray-800 text-sm'>Have an account? <Link to={"/"} ><span className='font-bold underline ml-2 text-blue-400 text-sm'>Sign In</span> </Link></p>
