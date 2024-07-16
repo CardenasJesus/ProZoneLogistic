@@ -5,11 +5,21 @@ import Avatar from '@mui/material/Avatar';
 import { deepPurple } from '@mui/material/colors';
 import SettingsIcon from '@mui/icons-material/Settings';
 
+
+// eslint-disable-next-line react/prop-types
 const SideBar = ({toggleSidebar, isSidebarOpen}) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isDropdownBottomOpen, setIsDropdownBottomOpen] = useState(false);
+    const [isDropdownPedido, setIsDropdownPedidos] = useState(false);
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
+    const togg = () => {
+        setIsDropdownBottomOpen(!isDropdownBottomOpen);
+    };
+    const toggPed = () => {
+        setIsDropdownPedidos(!isDropdownPedido);
+    }
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -63,7 +73,7 @@ const SideBar = ({toggleSidebar, isSidebarOpen}) => {
                                 </svg>
                             </button>
                             <Link to={"/dashboard"} className="flex ">
-                                <img src="./3.png" className="h-12 px-2" alt="Logo" />
+                                <img src="/3.png" className="h-12 px-2" alt="Logo" />
                                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-gray-900 dark:text-white hidden sm:block">ProdZoneLogistic</span>
                             </Link>
                         </div>
@@ -102,7 +112,7 @@ const SideBar = ({toggleSidebar, isSidebarOpen}) => {
                                         </li>
                                         <li>
                                             <Link
-                                                to={"/login"}
+                                                to={"/dashboard"}
                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                                                 role="menuitem"
                                                 id='MenuItem'
@@ -143,7 +153,7 @@ const SideBar = ({toggleSidebar, isSidebarOpen}) => {
                 aria-label="Sidebar"
             >
 
-                <div className="h-screen pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+                <div className="pb-4 overflow-y-auto bg-white dark:bg-gray-800">
                     <ul className="space-y-2 font-medium">
                         <li>
                             <Link
@@ -181,10 +191,7 @@ const SideBar = ({toggleSidebar, isSidebarOpen}) => {
                             </Link>
                         </li>
                         <li>
-                            <Link
-                                to={"/dashboard"}
-                                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                            >
+                                <div id="dropdownPedidos" onClick={toggPed} className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 cursor-pointer group"> 
                                 <svg
                                     className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                     aria-hidden="true"
@@ -194,9 +201,20 @@ const SideBar = ({toggleSidebar, isSidebarOpen}) => {
                                 >
                                     <path d="M4 3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H4Zm5 12H4v-2h5v2Zm7-4H4V9h12v2Zm0-4H4V5h12v2Z" />
                                 </svg>
-                                <span className="ms-3">Pedidos</span>
-                            </Link>
+                                    <p className="ms-3"> Pedidos </p>    
+                                </div>
+                            <div id="dropdownBottomPedidos" className={`z-50 ${isDropdownPedido ? 'block' : 'hidden'} bg-white divide-y divide-gray-100  w-28`}>
+                                <ul className="py-2 text-sm text-gray-700" aria-labelledby="dropdownBottomButton">
+                                <li>
+                                    <Link to={"/administrar/pedidos"} className="block px-8 py-2 text-gray-800">Administrar Pedidos</Link>
+                                </li>
+                                <li>
+                                    <Link to={"#"} className="block px-8 py-2 text-gray-800">Historial</Link>
+                                </li>
+                                </ul>
+                            </div>
                         </li>
+                        
                         <li>
                             <Link
                                 to={"/dashboard"}
@@ -231,6 +249,26 @@ const SideBar = ({toggleSidebar, isSidebarOpen}) => {
                                 </svg>
                                 <span className="ms-3">Help</span>
                             </Link>
+                        </li>
+                        <li>
+                            <div id="dropdownBottomButton" onClick={togg} className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 cursor-pointer group"> 
+                                    <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
+                                    </svg>
+                                    <p className="ms-3"> Colaboradores </p>    
+                            </div>
+                            
+                                {/*<!-- Dropdown menu --> */}
+                            <div id="dropdownBottom" className={`z-50 ${isDropdownBottomOpen ? 'block' : 'hidden'} bg-white divide-y divide-gray-100  w-28`}>
+                                <ul className="py-2 text-sm text-gray-700" aria-labelledby="dropdownBottomButton">
+                                <li>
+                                    <Link to={"/administrar/colaboradores"} className="block px-8 py-2 text-gray-800">Administrar</Link>
+                                </li>
+                                <li>
+                                    <Link to={"#"} className="block px-8 py-2 text-gray-800">Conductores</Link>
+                                </li>
+                                </ul>
+                            </div>
                         </li>
                     </ul>
                     <div className='w-full fixed bottom-0 text-gray-800'>

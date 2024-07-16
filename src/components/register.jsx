@@ -12,7 +12,7 @@ const Register = () => {
         status: false,
         fecha_ingreso: null,
         user: null,
-        rol: 1,
+        rol: 2,
         departamento: 1
     });
 
@@ -31,7 +31,7 @@ const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(formData);  // Verifica los datos que se están enviando
-        axios.post('https://www.prozonelogistic.site/api/v1/api/employees/register/', formData, {
+        axios.post('http://127.0.0.1:8000/v1/api/employees/register/', formData, {
             headers: {
                 'Content-Type': 'application/json'
             }
