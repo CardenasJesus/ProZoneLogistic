@@ -20,65 +20,65 @@ const style = {
     maxHeight: '90vh', // Altura máxima para evitar el desbordamiento
   };
  
-const UpdateModal = ({open, handleClose, selectedUser}) => {
-    const [formsData, setFormsData] = useState({
-        nombre: '',
-        apellido: '',
-        email: '',
-        rol: '',
-        status: ''
-      });
+const UpdateModalPedidos = ({open, handleClose, selectedUser}) => {
+    // const [formsData, setFormsData] = useState({
+    //     name: '',
+    //     apellido: '',
+    //     email: '',
+    //     rol: '',
+    //     status: ''
+    //   });
 
-      useEffect(() => {
-        if (selectedUser) {
-          setFormsData({
-            nombre: selectedUser.nombre || '',
-            apellido: selectedUser.apellido || '',
-            email: selectedUser.email || '',
-            rol: selectedUser.rol?.id || '',
-            status: selectedUser.status || ''
-          });
-        }
-      }, [selectedUser]);
+    //   useEffect(() => {
+    //     if (selectedUser) {
+    //       setFormsData({
+    //         nombre: selectedUser.nombre || '',
+    //         apellido: selectedUser.apellido || '',
+    //         email: selectedUser.email || '',
+    //         rol: selectedUser.rol?.id || '',
+    //         status: selectedUser.status || ''
+    //       });
+    //     }
+    //   }, [selectedUser]);
     
-      const handleInputChange = (e) => {
-        setFormsData({
-          ...formsData,
-          [e.target.name]: e.target.value
-        });
-      };
-    const sendUpdUser = async (e) => {
-        e.preventDefault();
-        console.log(formsData);
-        fetch(`http://127.0.0.1:8000/v1/api/employees/update/${selectedUser.id}/`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formsData)
-        })
-        .then(response => {
-            if(response.ok){
-            response.json()
-            }else{
-                (error => {
-                    throw error || 'Error updating user'
-                })
-            }
-        })
-        .then(data => {
-            toast.success('User updated')
-        })
-        .catch(error => {
-            toast.error('Error updating user')
-            console.log('error', error);
-        })  
-    }
+    //   const handleInputChange = (e) => {
+    //     setFormsData({
+    //       ...formsData,
+    //       [e.target.name]: e.target.value
+    //     });
+    //   };
+    // const sendUpdUser = async (e) => {
+    //     e.preventDefault();
+    //     console.log(formsData);
+    //     fetch(`http://127.0.0.1:8000/v1/api/employees/update/${selectedUser.id}/`, {
+    //         method: 'PUT',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify(formsData)
+    //     })
+    //     .then(response => {
+    //         if(response.ok){
+    //         response.json()
+    //         }else{
+    //             (error => {
+    //                 throw error || 'Error updating user'
+    //             })
+    //         }
+    //     })
+    //     .then(data => {
+    //         toast.success('User updated')
+    //     })
+    //     .catch(error => {
+    //         toast.error('Error updating user')
+    //         console.log('error', error);
+    //     })  
+    // }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        sendUpdUser(e)
-        }
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     sendUpdUser(e)
+    //     }
     return(
         <>
             <Modal
@@ -107,13 +107,13 @@ const UpdateModal = ({open, handleClose, selectedUser}) => {
                   </button>
                 </div>
                 <div className='w-full flex justify-center items-center content-center'>
-                  <form onSubmit={handleSubmit} className="w-full p-4">
+                  {/* <form onSubmit={handleSubmit} className="w-full p-4">
                     <div className='w-full grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4'>
                         <div>
                         <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">First Name</label>
                         <input
                             type="text"
-                            name='nombre'
+                            name='name'
                             value={formsData.nombre}
                             onChange={handleInputChange}
                             id="name"
@@ -159,6 +159,7 @@ const UpdateModal = ({open, handleClose, selectedUser}) => {
                                     const value = e.target.value === 'true';
                                     handleInputChange({ target: { name: e.target.name, value } });
                                     }}className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                            <option selected disabled>Actualice el estado</option>
                             <option value= {true}>Activo</option>
                             <option value={false}>Inactivo</option>
                         </select>
@@ -193,7 +194,7 @@ const UpdateModal = ({open, handleClose, selectedUser}) => {
                             </button>
 
                     </div>
-                  </form>
+                  </form> */}
                 </div>
               </nav>
             </>
@@ -204,7 +205,7 @@ const UpdateModal = ({open, handleClose, selectedUser}) => {
     )
 }
 
-const CreateModal = ({ openC, handleCloseC, getUsers}) => {
+const CreateModalPedidos = ({ openC, handleCloseC, getUsers}) => {
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
     const [telefono, setTelefono] = useState('');
@@ -402,7 +403,7 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
                             </div>
                             <div className='grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mb-2'>
                         <div className=''>
-                        <label htmlFor="select_status" className="block mb-2 text-sm font-medium text-gray-900 ">Asigne un status</label>
+                        <label htmlFor="select_status" className="block mb-2 text-sm font-medium text-gray-900 ">Confirme Password</label>
                                 <select id="select_status" name='status'  onChange={(e) => {
                                 const value = e.target.value === 'true';
                                 handleInputChange({ target: { name: e.target.name, value } });
@@ -482,4 +483,4 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
     )
 }
 
-export {UpdateModal, CreateModal};
+export {UpdateModalPedidos, CreateModalPedidos};

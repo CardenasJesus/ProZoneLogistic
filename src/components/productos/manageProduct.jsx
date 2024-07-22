@@ -1,48 +1,17 @@
-
-import { UpdateModalPedidos } from "./modales/modal";
-import { useState, useEffect } from "react";
-import toast, { Toaster } from "react-hot-toast";
-
-const PedPedidos = ({Datas}) => {
+import {useState } from "react";
+import { UpdateModal, } from "./modales/modal";
+import { Toaster } from "react-hot-toast";
+const ManagePedidos = ({productos}) =>{
     const [open, setOpen] = useState(false);
-    const [selectedUser, setSelectedUser] = useState({});
-    const [statuses, setStatuses] = useState([]);
+    const [selectProducto, setSelectProducto] = useState({});
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    useEffect(() => {
-        if (Datas && Datas.length > 0) {
-            setStatuses(Datas.map(item => item.status));
-        }
-    }, [Datas]);
     const handleSelect = (user) => {
-        setSelectedUser(user);
+        setSelectProducto(user);
         handleOpen();
     }
-    const handleStatusChange = (index) => {
-        const updatedStatuses = [...statuses];
-        updatedStatuses[index] = !statuses[index];
-        setStatuses(updatedStatuses);
-        
-        const statusToSend = updatedStatuses[index];
-        
-        fetch(`http://127.0.0.1:8000/v1/api/employees/update/status/${Datas[index].id}/`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ status: statusToSend })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Status updated successfully:", data);
-            toast.success('Status updated successfully');
-        })
-        .catch((error) => {
-            console.error("Error updating status:", error);
-        });
-    };
     
-    if (Datas === undefined || Datas.length === 0) {
+    if (productos === undefined || productos.length === 0) {
         return <div role="status">
             <svg aria-hidden="true" className="inline w-8 h-8 text-gray-200 animate-spin  fill-red-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
@@ -53,18 +22,18 @@ const PedPedidos = ({Datas}) => {
     };
     return (
         <>
-        <UpdateModalPedidos 
+        <UpdateModal 
             open={open}
             handleOpen={handleOpen}
             handleClose={handleClose}
-            selectedUser={selectedUser}
+            selectProducto={selectProducto}
         />
          <Toaster
         position="top-center"
         reverseOrder={false}
         />
-          <section className="w-full">
-            <div className="bg-gray-100 shadow-md rounded-bl-2xl rounded-tr-2xl w-fit"><h1 className="font-bold text-2xl p-4 text-gray-600">Administrar Pedidos</h1></div>
+          <section className="w-full ">
+           <nav className="w-full flex justify-start text-start items-start px-8"> <div className="bg-blue-300 shadow-md rounded-br-2xl rounded-tr-2xl w-fit "><h1 className=" font-bold text-2xl p-4 text-gray-100">Gestionar Catalago de Productos</h1></div></nav>
             <div className="p-4">
                 <div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
@@ -74,36 +43,40 @@ const PedPedidos = ({Datas}) => {
                                     Name
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
-                                    Email
+                                    Descripcion
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
-                                    Telefono
+                                    Peso
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
-                                    Rol
+                                    Precio Unitario
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-center">
+                                    Imagen
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
                                     Actualizar
                                 </th>
-                                <th scope="col" className="px-6 py-3 flex justify-center col-span-2">
-                                    Ajustar estatus
-                                </th>
+                                
                             </tr>
                         </thead>
                         <tbody>
-                                {Datas.map((data, index) => (
+                                {productos.map((data) => (
                                     <tr key={data.id} className="odd:bg-white  even:bg-gray-50  border-b ">
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  text-center">
-                                        {data.nombre} {data.apellido}
+                                        {data.nombre_producto}
                                         </th>
                                         <td className="px-6 py-4 text-center">
-                                            {data.email}
+                                            {data.descripcion_producto}
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            {data.telefono}
+                                            {data.peso_producto} KG
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            {data.rol.nombre}
+                                            ${data.precio_producto}
+                                        </td>
+                                        <td className="px-6 py-4 text-center">
+                                        <img src={`http://127.0.0.1:8000${data.imagen_producto}`} className="w-24 items-center" alt="..." />
                                         </td>
                                         <td className="px-6 py-4 grid grid-cols-1 justify-center items-center text-center content-center">
                                             <div className="">
@@ -115,19 +88,7 @@ const PedPedidos = ({Datas}) => {
                                                 
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-center">
-                                        <div className="font-medium text-blue-600 bg-transparent hover:underline w-full">
-                                            <label className="relative inline-flex items-center cursor-pointer">
-                                            <input
-                                                type="checkbox"
-                                                checked={statuses[index]}
-                                                        onChange={() => handleStatusChange(index)}
-                                                className="sr-only peer"
-                                            />
-                                            <div className="group peer ring-0 bg-rose-400 rounded-full outline-none duration-300 after:duration-300 w-24 h-10 shadow-md peer-checked:bg-emerald-500 peer-focus:outline-none after:content-['✖️'] after:rounded-full after:absolute after:bg-gray-50 after:outline-none after:h-8 after:w-8 after:top-1 after:left-1 after:-rotate-180 after:flex after:justify-center after:items-center peer-checked:after:translate-x-12 peer-checked:after:content-['✔️'] peer-hover:after:scale-95 peer-checked:after:rotate-0"></div>
-                                            </label>
-                                        </div>
-                                        </td>
+                                       
                                     </tr>
                                 ))}
                             </tbody>
@@ -139,4 +100,5 @@ const PedPedidos = ({Datas}) => {
         </>
     );
 }
-export default PedPedidos;
+
+export default ManagePedidos;

@@ -7,6 +7,11 @@ import AdminPage from "./routes/pages/sentspage"
 import ProtectedRoute from "./routes/private/protectedRoutes"
 import AdministrarColab from "./routes/pages/administrar_col"
 import ManagePedidos from "./routes/pages/managePedidos"
+import ManageClients from "./routes/pages/manageClient"
+import CatalogoProductos from "./routes/pages/catalogo_Productos"
+import ManageProductos from "./routes/pages/manageProducto"
+import ProveedoresPage from "./routes/pages/proveedoresPage"
+import LotesPage from './routes/pages/lotespage'
 import NotFound from './routes/pages/404'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
@@ -25,7 +30,7 @@ const router = createBrowserRouter([
     element: <ProtectedRoute element={<Dashboard />} />
   },
   {
-    path: "/envios",
+    path: "/administrar/envios",
     element: <ProtectedRoute element={<AdminPage />} />
   },
   {
@@ -35,6 +40,26 @@ const router = createBrowserRouter([
   {
     path: "/administrar/pedidos",
     element: <ProtectedRoute element={<ManagePedidos />}/>
+  },
+  {
+    path: "/administrar/clientes",
+    element: <ProtectedRoute element={<ManageClients />}/>
+  },
+  {
+    path: "/administrar/catalogo/productos",
+    element: <ProtectedRoute element={<CatalogoProductos />}/>
+  },
+  {
+    path: "/administrar/productos/",
+    element: <ProtectedRoute element={<ManageProductos />}/>
+  },
+  {
+    path: "/administrar/producto/proveedor",
+    element: <ProtectedRoute element={<ProveedoresPage />}/>
+  },
+  {
+    path: "/administrar/producto/lotes",
+    element: <ProtectedRoute element={<LotesPage />}/>
   },
   {
     path: "*",

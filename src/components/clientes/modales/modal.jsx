@@ -20,24 +20,73 @@ const style = {
     maxHeight: '90vh', // Altura máxima para evitar el desbordamiento
   };
  
-const UpdateModal = ({open, handleClose, selectedUser}) => {
+const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
+    const [nombre_cliente, setNombreCliente] = useState('');
+    const [apellido_cliente, setApellidoCliente] = useState('');
+    const [telefono, setTelefono] = useState('');
     const [formsData, setFormsData] = useState({
-        nombre: '',
-        apellido: '',
+        nombre_cliente: '',
+        apellido_cliente: '',
+        telefono: '',
         email: '',
-        rol: '',
+        direccion: '',
         status: ''
       });
+      const validateValues = (value,pattern) => {
+        return pattern.test(value);
+    }
+
+    const handlePatterns = (e) => {
+        e.preventDefault();
+        const {name, value} = e.target;
+        let pattern;
+        switch(name){
+            case 'nombre_cliente':
+            case 'apellido_cliente':
+                pattern = /^[a-zA-ZáéóíÁÉÓÚÑñ\s]+$/;
+                break;
+            case 'telefono':
+                pattern = /^\d{0,3}-?\d{0,3}-?\d{0,4}$/;
+                break;
+            default:
+                break;
+        } 
+
+        const isValidValues = validateValues(value, pattern);
+        if (value === '' || isValidValues) {
+            let formattedInput = value;
+            if (name === 'telefono') {
+                const digitsOnly = value.replace(/[^0-9]/g, '');
+                formattedInput = digitsOnly.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+            }
+            switch (name) {
+                case 'nombre_cliente':
+                    setNombreCliente(formattedInput);
+                    break;
+                case 'apellido_cliente':
+                    setApellidoCliente(formattedInput);
+                    break;
+                case 'telefono':
+                    setTelefono(formattedInput);
+                    break;
+                default:
+                    break;
+            }
+        }}
 
       useEffect(() => {
         if (selectedUser) {
           setFormsData({
-            nombre: selectedUser.nombre || '',
-            apellido: selectedUser.apellido || '',
+            nombre_cliente: selectedUser.nombre_cliente || '',
+            apellido_cliente: selectedUser.apellido_cliente || '',
+            telefono: selectedUser.telefono || '',
             email: selectedUser.email || '',
-            rol: selectedUser.rol?.id || '',
+            direccion: selectedUser.direccion || '',
             status: selectedUser.status || ''
           });
+          setNombreCliente(selectedUser.nombre_cliente || '');
+          setApellidoCliente(selectedUser.apellido_cliente || '');
+          setTelefono(selectedUser.telefono || '');
         }
       }, [selectedUser]);
     
@@ -47,38 +96,37 @@ const UpdateModal = ({open, handleClose, selectedUser}) => {
           [e.target.name]: e.target.value
         });
       };
-    const sendUpdUser = async (e) => {
+      const sendUpdUser = async (e) => {
         e.preventDefault();
         console.log(formsData);
-        fetch(`http://127.0.0.1:8000/v1/api/employees/update/${selectedUser.id}/`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formsData)
-        })
-        .then(response => {
-            if(response.ok){
-            response.json()
-            }else{
-                (error => {
-                    throw error || 'Error updating user'
-                })
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/v1/api/clients/update/${selectedUser.id}/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formsData)
+            });
+    
+            if (response.ok) {
+                const data = await response.json();
+                toast.success('User updated');
+                console.log(data);
+            } else {
+                toast.error('Error updating user');
+                const errorData = await response.json();
+                console.error('Error data:', errorData);
             }
-        })
-        .then(data => {
-            toast.success('User updated')
-        })
-        .catch(error => {
-            toast.error('Error updating user')
-            console.log('error', error);
-        })  
+        } catch (error) {
+            toast.error('Error updating user');
+            console.error('Error:', error);
+        }
     }
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
-        sendUpdUser(e)
-        }
+        sendUpdUser(e);
+    }
     return(
         <>
             <Modal
@@ -99,7 +147,7 @@ const UpdateModal = ({open, handleClose, selectedUser}) => {
             <>
               <nav className='w-full p-4 grid grid-cols-1 h-fit'>
                 <div className='w-full flex justify-between items-baseline'>
-                  <h1 className='font-bold text-2xl text-center'>Actualizar usuario</h1>
+                  <h1 className='font-bold text-2xl text-center'>Actualizar Informacion de clientes</h1>
                   <button onClick={handleClose}>
                     <svg className="w-4 h-4 bg-transparent text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m6 18 12-12M6 6l12 12" />
@@ -108,57 +156,74 @@ const UpdateModal = ({open, handleClose, selectedUser}) => {
                 </div>
                 <div className='w-full flex justify-center items-center content-center'>
                   <form onSubmit={handleSubmit} className="w-full p-4">
-                    <div className='w-full grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4'>
+                    <div className='w-full grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mb-4'>
                         <div>
-                        <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">First Name</label>
-                        <input
-                            type="text"
-                            name='nombre'
-                            value={formsData.nombre}
-                            onChange={handleInputChange}
-                            id="name"
-                            className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
-                        />
+                            <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">Nombre</label>
+                            <input
+                                type="text"
+                                name='nombre_cliente'
+                                value={nombre_cliente}
+                                onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
+                                id="name"
+                                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
+                            />
                         </div>
                         <div>
-                        <label htmlFor="apellido" className="block mb-2 text-sm font-medium text-gray-900 ">Last Name</label>
-                        <input
-                            type="text"
-                            name='apellido'
-                            value={formsData.apellido}
-                            onChange={handleInputChange}
-                            id="apellido"
-                            className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
-                        />
+                            <label htmlFor="apellido" className="block mb-2 text-sm font-medium text-gray-900 ">Apellido</label>
+                            <input
+                                type="text"
+                                name='apellido_cliente'
+                                value={apellido_cliente}
+                                onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
+                                id="apellido"
+                                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
+                            />
+                        </div>
+                    </div>
+                    <div className='w-full grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4'>
+                    <div className='mb-4'>
+                            <label htmlFor="telefono" className="block mb-2 text-sm font-medium text-gray-900 ">Telefono</label>
+                            <input
+                                type="text"
+                                name='telefono'
+                                value={telefono}
+                                onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
+                                id="telefono"
+                                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
+                            />
+                        </div>
+                        <div className='mb-6'>
+                            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
+                            <input
+                                type="email"
+                                name='email'
+                                value={formsData.email}
+                                onChange={handleInputChange}
+                                id="email"
+                                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
+                            />
+                        </div>
+                    </div>
+                    <div className='mb-4'>
+                            <label htmlFor="direccion" className="block mb-2 text-sm font-medium text-gray-900 ">Direccion</label>
+                            <input
+                                type="text"
+                                name='direccion'
+                                value={formsData.direccion}
+                                onChange={handleInputChange}
+                                id="direccion"
+                                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
+                            />
                         </div>
                         
-                    </div>
-                    <div className='mb-6'>
-                        <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
-                        <input
-                            type="email"
-                            name='email'
-                            value={formsData.email}
-                            onChange={handleInputChange}
-                            id="email"
-                            className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
-                        />
-                        </div>
-                        <div className='mb-6 grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-8 justify-center content-center items-center'>
-                        <div className=''>
-                                        <label htmlFor="rol" className="block mb-2 text-sm font-medium text-gray-900 ">Asigne un Rol</label>
-                                        <select id="rol" name='rol' onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                                            <option selected disabled>Asigne un nuevo Rol</option>
-                                            <option value="1">Administrador</option>
-                                            <option value="2">Colaborador</option>
-                                        </select>
-                        </div>
+                        <div className='mb-6 '>
                         <div className=''>
                         <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 ">Asigne un status</label>
                         <select id="countries" name='status' onChange={(e) => {
                                     const value = e.target.value === 'true';
                                     handleInputChange({ target: { name: e.target.name, value } });
                                     }}className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                            <option disabled selected value= {false}>Asigne un Status</option>
                             <option value= {true}>Activo</option>
                             <option value={false}>Inactivo</option>
                         </select>
@@ -204,9 +269,9 @@ const UpdateModal = ({open, handleClose, selectedUser}) => {
     )
 }
 
-const CreateModal = ({ openC, handleCloseC, getUsers}) => {
-    const [nombre, setNombre] = useState('');
-    const [apellido, setApellido] = useState('');
+const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
+    const [nombre_cliente, setNombreClientes] = useState('');
+    const [apellido_cliente, setApellidoClientes] = useState('');
     const [telefono, setTelefono] = useState('');
     const validateValues = (value,pattern) => {
         return pattern.test(value);
@@ -217,8 +282,8 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
         const {name, value} = e.target;
         let pattern;
         switch(name){
-            case 'nombre':
-            case 'apellido':
+            case 'nombre_cliente':
+            case 'apellido_cliente':
                 pattern = /^[a-zA-ZáéóíÁÉÓÚÑñ\s]+$/;
                 break;
             case 'telefono':
@@ -236,11 +301,11 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
                 formattedInput = digitsOnly.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
             }
             switch (name) {
-                case 'nombre':
-                    setNombre(formattedInput);
+                case 'nombre_cliente':
+                    setNombreClientes(formattedInput);
                     break;
-                case 'apellido':
-                    setApellido(formattedInput);
+                case 'apellido_cliente':
+                    setApellidoClientes(formattedInput);
                     break;
                 case 'telefono':
                     setTelefono(formattedInput);
@@ -250,15 +315,12 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
             }
         }}
     const [formsData, setFormsData] = useState({
-        nombre: '',
-        apellido: '',
+        nombre_cliente: '',
+        apellido_cliente: '',
         telefono: '',
         email: '',
-        password: '',
-        repeat_password: '',
+        direccion: '',
         status: false,
-        rol: '',
-        departamento: ''
       });
       const handleInputChange = (e) => {
         e.preventDefault();
@@ -271,7 +333,7 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
         e.preventDefault();
       
         console.log(formsData);
-        fetch('http://127.0.0.1:8000/v1/api/employees/register/', {
+        fetch('http://127.0.0.1:8000/v1/api/clients/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -289,25 +351,18 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
         })
         .then(data => {
             console.log(data);
-            getUsers();
+            toast.success('User created successfully')
+            getClients();
         })
         .catch(error => {
             console.log('error', error);
+            toast.error('Error creating user')
         })  
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-            try{
-                toast.promise(
-                    CreateUser(e), {
-                    loading: 'Loading',
-                    success: 'User updated ',
-                    error: 'Error updating user'
-                })
-            }catch(error){
-                console.log('error', error);
-            }
+        CreateUser(e)
         }
     return(
         <>
@@ -343,8 +398,8 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
                                     <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">First Name</label>
                                     <input
                                         type="text"
-                                        name='nombre'
-                                        value={nombre}
+                                        name='nombre_cliente'
+                                        value={nombre_cliente}
                                         onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
                                         id="name"
                                         placeholder='John'
@@ -355,16 +410,27 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
                                     <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-gray-900 ">Last name</label>
                                     <input
                                         type="text"
-                                        name='apellido'
-                                        value={apellido}
+                                        name='apellido_cliente'
+                                        value={apellido_cliente}
                                         placeholder='Doe'
                                         onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
                                         id="lastname"
                                         className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
                                     />
                                 </div>
-                                
+                               
                             </div>
+                            <div className='mb-4'>
+                                    <label htmlFor="direccion" className="block mb-2 text-sm font-medium text-gray-900 ">Direccion</label>
+                                    <input
+                                        type="text"
+                                        name='direccion'
+                                        placeholder='15th Av Street'
+                                        onChange={(e) => {handleInputChange(e)}}
+                                        id="lastname"
+                                        className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                    />
+                                </div>
                             <div className='mb-2'>
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
                                 <input
@@ -376,39 +442,17 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
                                     className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
                                 />
                                 </div>
-                            <div className='grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-4 mb-2'>
-                            <div>
-                            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
-                            <input
-                                type="password"
-                                name='password'
-                                onChange={handleInputChange}
-                                id="password"
-                                placeholder='password'
-                                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
-                            />
-                            </div>
-                            <div>
-                            <label htmlFor="eat_password" className="block mb-2 text-sm font-medium text-gray-900 ">Confirme Password</label>
-                            <input
-                                type="password"
-                                name='repeat_password'
-                                onChange={handleInputChange}
-                                id="re[eat_password"
-                                placeholder='password'
-                                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
-                            />
-                            </div>
-                            </div>
+                           
                             <div className='grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mb-2'>
                         <div className=''>
-                        <label htmlFor="select_status" className="block mb-2 text-sm font-medium text-gray-900 ">Asigne un status</label>
+                        <label htmlFor="select_status" className="block mb-2 text-sm font-medium text-gray-900 ">Asigne Satatus</label>
                                 <select id="select_status" name='status'  onChange={(e) => {
                                 const value = e.target.value === 'true';
                                 handleInputChange({ target: { name: e.target.name, value } });
                                 }} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                                    <option disabled selected value= {false}>Asigne un Status</option>
+                                    <option value= {true}>Activo</option>
                                     <option value={false}>Inactivo</option>
-                                    <option value={true}>Activo</option>
                                 </select>
                             </div>
                             <div>
@@ -424,24 +468,6 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
                             />
                             </div>
                             </div>
-                            <div className='grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mb-4'>
-                                <div className=''>
-                                        <label htmlFor="id_rol" className="block mb-2 text-sm font-medium text-gray-900 ">Asigne un Rol</label>
-                                        <select id="id_rol" name='rol' onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                                            <option selected disabled>Asigne un Rol</option>
-                                            <option value="1">Administrador</option>
-                                            <option value="2">Colaborador</option>
-                                        </select>
-                                    </div>
-                                    <div className=''>
-                                        <label htmlFor="id_departamento" className="block mb-2 text-sm font-medium text-gray-900 ">Asigne un Departamento</label>
-                                        <select id="id_departamento" name='departamento' onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                                            <option selected disabled>Asigne un Departamento</option>
-                                            <option value="1">Logistica</option>
-                                            <option value="2">Calidad</option>
-                                        </select>
-                                    </div>
-                                </div>
                             <div>
                             <button
                                     type="submit" onClick={handleCloseC}
@@ -482,4 +508,4 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
     )
 }
 
-export {UpdateModal, CreateModal};
+export {UpdateModalClientes, CreateModalClientes};

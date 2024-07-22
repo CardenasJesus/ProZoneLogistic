@@ -1,22 +1,21 @@
-
-import { UpdateModalPedidos } from "./modales/modal";
+import { UpdateModalClientes } from "./modales/modal";
 import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
-const PedPedidos = ({Datas}) => {
+const PedClientes = ({Datas}) => {
     const [open, setOpen] = useState(false);
-    const [selectedUser, setSelectedUser] = useState({});
+    const [selectedClient, setSelectedClient] = useState({});
     const [statuses, setStatuses] = useState([]);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleOpenClientesUpd = () => setOpen(true);
+    const handleCloseClientesUpd = () => setOpen(false);
     useEffect(() => {
         if (Datas && Datas.length > 0) {
             setStatuses(Datas.map(item => item.status));
         }
     }, [Datas]);
     const handleSelect = (user) => {
-        setSelectedUser(user);
-        handleOpen();
+        setSelectedClient(user);
+        handleOpenClientesUpd();
     }
     const handleStatusChange = (index) => {
         const updatedStatuses = [...statuses];
@@ -25,7 +24,7 @@ const PedPedidos = ({Datas}) => {
         
         const statusToSend = updatedStatuses[index];
         
-        fetch(`http://127.0.0.1:8000/v1/api/employees/update/status/${Datas[index].id}/`, {
+        fetch(`http://127.0.0.1:8000/v1/api/clients/update/status/${Datas[index].id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -53,22 +52,22 @@ const PedPedidos = ({Datas}) => {
     };
     return (
         <>
-        <UpdateModalPedidos 
+        <UpdateModalClientes 
             open={open}
-            handleOpen={handleOpen}
-            handleClose={handleClose}
-            selectedUser={selectedUser}
+            handleOpen={handleOpenClientesUpd}
+            handleClose={handleCloseClientesUpd}
+            selectedUser={selectedClient}
         />
          <Toaster
         position="top-center"
         reverseOrder={false}
         />
           <section className="w-full">
-            <div className="bg-gray-100 shadow-md rounded-bl-2xl rounded-tr-2xl w-fit"><h1 className="font-bold text-2xl p-4 text-gray-600">Administrar Pedidos</h1></div>
+            <div className="bg-green-500 shadow-md rounded-bl-2xl rounded-tr-2xl w-fit"><h1 className="font-bold text-2xl p-4 text-gray-100">Gestionar Clientes</h1></div>
             <div className="p-4">
                 <div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
-                        <thead className="text-xs text-gray-700 uppercase bg-blue-200 ">
+                        <thead className="text-xs text-gray-700 uppercase bg-green-200">
                             <tr>
                                 <th scope="col" className="px-6 py-3 text-center">
                                     Name
@@ -80,7 +79,7 @@ const PedPedidos = ({Datas}) => {
                                     Telefono
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
-                                    Rol
+                                    Direccion
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
                                     Actualizar
@@ -94,7 +93,7 @@ const PedPedidos = ({Datas}) => {
                                 {Datas.map((data, index) => (
                                     <tr key={data.id} className="odd:bg-white  even:bg-gray-50  border-b ">
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  text-center">
-                                        {data.nombre} {data.apellido}
+                                        {data.nombre_cliente} {data.apellido_cliente}
                                         </th>
                                         <td className="px-6 py-4 text-center">
                                             {data.email}
@@ -103,7 +102,7 @@ const PedPedidos = ({Datas}) => {
                                             {data.telefono}
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            {data.rol.nombre}
+                                            {data.direccion}
                                         </td>
                                         <td className="px-6 py-4 grid grid-cols-1 justify-center items-center text-center content-center">
                                             <div className="">
@@ -139,4 +138,4 @@ const PedPedidos = ({Datas}) => {
         </>
     );
 }
-export default PedPedidos;
+export default PedClientes;
