@@ -101,8 +101,8 @@ const UpdateModalVehiculo = ({open, handleClose, selectedVehiculo}) => {
         e.preventDefault();
         console.log(formsData);
         try {
-            // http://127.0.0.1:8000/v1/api/clients/update/${selectedVehiculo.id}/
-            const response = await fetch(``, {
+            // http://127.0.0.1:8000/v1/api/vehicles/update/${selectedVehiculo.id}/
+            const response = await fetch(`http://127.0.0.1:8000/v1/api/vehicles/update/${selectedVehiculo.id}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

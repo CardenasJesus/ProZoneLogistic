@@ -24,7 +24,7 @@ const ManageVehiculos = ({Vehiculos}) => {
         
         const statusToSend = updatedStatuses[index];
         
-        fetch(`http://127.0.0.1:8000/v1/api/clients/update/status/${Vehiculos[index].id}/`, {
+        fetch(`http://127.0.0.1:8000/v1/api/vehicles/update/status/${Vehiculos[index].id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
