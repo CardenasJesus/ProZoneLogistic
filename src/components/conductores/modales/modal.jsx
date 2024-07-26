@@ -20,16 +20,17 @@ const style = {
     maxHeight: '90vh', // Altura máxima para evitar el desbordamiento
   };
  
-const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
-    const [nombre_cliente, setNombreCliente] = useState('');
-    const [apellido_cliente, setApellidoCliente] = useState('');
-    const [telefono, setTelefono] = useState('');
+const UpdateModalConductores = ({open, handleCloseConductorUpd, selectedConductor}) => {
+    const [nombre, setNombreConductor] = useState('');
+    const [apellido, setApellidoConductor] = useState('');
+    const [edad, setEdad] = useState('');
     const [formsData, setFormsData] = useState({
-        nombre_cliente: '',
-        apellido_cliente: '',
-        telefono: '',
-        email: '',
-        direccion: '',
+        nombre: '',
+        apellido: '',
+        edad: '',
+        genero: '',
+        tipo_licencia: '',
+        numero_licencia: '',
         status: ''
       });
       const validateValues = (value,pattern) => {
@@ -41,12 +42,12 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
         const {name, value} = e.target;
         let pattern;
         switch(name){
-            case 'nombre_cliente':
-            case 'apellido_cliente':
+            case 'nombre':
+            case 'apellido':
                 pattern = /^[a-zA-ZáéóíÁÉÓÚÑñ\s]+$/;
                 break;
-            case 'telefono':
-                pattern = /^\d{0,3}-?\d{0,3}-?\d{0,4}$/;
+            case 'edad':
+                pattern = /^\d{1,2}$/;
                 break;
             default:
                 break;
@@ -55,19 +56,15 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
         const isValidValues = validateValues(value, pattern);
         if (value === '' || isValidValues) {
             let formattedInput = value;
-            if (name === 'telefono') {
-                const digitsOnly = value.replace(/[^0-9]/g, '');
-                formattedInput = digitsOnly.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
-            }
             switch (name) {
-                case 'nombre_cliente':
-                    setNombreCliente(formattedInput);
+                case 'nombre':
+                    setNombreConductor(formattedInput);
                     break;
                 case 'apellido_cliente':
-                    setApellidoCliente(formattedInput);
+                    setApellidoConductor(formattedInput);
                     break;
-                case 'telefono':
-                    setTelefono(formattedInput);
+                case 'edad':
+                    setEdad(formattedInput);
                     break;
                 default:
                     break;
@@ -75,20 +72,21 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
         }}
 
       useEffect(() => {
-        if (selectedUser) {
+        if (selectedConductor) {
           setFormsData({
-            nombre_cliente: selectedUser.nombre_cliente || '',
-            apellido_cliente: selectedUser.apellido_cliente || '',
-            telefono: selectedUser.telefono || '',
-            email: selectedUser.email || '',
-            direccion: selectedUser.direccion || '',
-            status: selectedUser.status || ''
+            nombre: selectedConductor.nombre || '',
+            apellido: selectedConductor.apellido || '',
+            edad: selectedConductor.edad || '',
+            genero: selectedConductor.genero || '',
+            tipo_licencia: selectedConductor.tipo_licencia || '',
+            numero_licencia: selectedConductor.numero_licencia || '',
+            status: selectedConductor.status || ''
           });
-          setNombreCliente(selectedUser.nombre_cliente || '');
-          setApellidoCliente(selectedUser.apellido_cliente || '');
-          setTelefono(selectedUser.telefono || '');
+          setNombreConductor(selectedConductor.nombre || '');
+          setApellidoConductor(selectedConductor.apellido || '');
+          setEdad(selectedConductor.edad || '');
         }
-      }, [selectedUser]);
+      }, [selectedConductor]);
     
       const handleInputChange = (e) => {
         setFormsData({
@@ -100,7 +98,8 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
         e.preventDefault();
         console.log(formsData);
         try {
-            const response = await fetch(`http://127.0.0.1:8000/v1/api/clients/update/${selectedUser.id}/`, {
+            // http://127.0.0.1:8000/v1/api/drivers/update/${selectedConductor.id}/
+            const response = await fetch(`http://127.0.0.1:8000/v1/api/drivers/update/${selectedConductor.id}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -133,7 +132,7 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
                 open={open}
-                onClose={handleClose}
+                onClose={handleCloseConductorUpd}
                 closeAfterTransition
                 slots={{ backdrop: Backdrop }}
                 slotProps={{
@@ -148,7 +147,7 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
               <nav className='w-full p-4 grid grid-cols-1 h-fit'>
                 <div className='w-full flex justify-between items-baseline'>
                   <h1 className='font-bold text-2xl text-center'>Actualizar Informacion de clientes</h1>
-                  <button onClick={handleClose}>
+                  <button onClick={handleCloseConductorUpd}>
                     <svg className="w-4 h-4 bg-transparent text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m6 18 12-12M6 6l12 12" />
                     </svg>
@@ -161,8 +160,8 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
                             <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">Nombre</label>
                             <input
                                 type="text"
-                                name='nombre_cliente'
-                                value={nombre_cliente}
+                                name='nombre'
+                                value={nombre}
                                 onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
                                 id="name"
                                 className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
@@ -172,8 +171,8 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
                             <label htmlFor="apellido" className="block mb-2 text-sm font-medium text-gray-900 ">Apellido</label>
                             <input
                                 type="text"
-                                name='apellido_cliente'
-                                value={apellido_cliente}
+                                name='apellido'
+                                value={apellido}
                                 onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
                                 id="apellido"
                                 className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
@@ -182,53 +181,60 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
                     </div>
                     <div className='w-full grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4'>
                     <div className='mb-4'>
-                            <label htmlFor="telefono" className="block mb-2 text-sm font-medium text-gray-900 ">Telefono</label>
+                            <label htmlFor="edad" className="block mb-2 text-sm font-medium text-gray-900 ">Edad</label>
                             <input
                                 type="text"
-                                name='telefono'
-                                value={telefono}
+                                name='edad'
+                                value={edad}
                                 onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
-                                id="telefono"
+                                id="edad"
                                 className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
                             />
                         </div>
                         <div className='mb-6'>
-                            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
-                            <input
-                                type="email"
-                                name='email'
-                                value={formsData.email}
-                                onChange={handleInputChange}
-                                id="email"
-                                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
-                            />
+                                <label htmlFor="select_gener" className="block mb-2 text-sm font-medium text-gray-900 ">Genero</label>
+                                    <select id="select_gener" name='genero'  onChange={(e) => {handleInputChange(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                                        <option disabled selected value= {formsData.genero}>Seleccione genero</option>
+                                        <option value= {"Masculino"}>Masculino</option>
+                                        <option value={"Femenino"}>Femenino</option>
+                                        <option value={""}>Prefiero no especificar</option>
+                                    </select>
                         </div>
                     </div>
-                    <div className='mb-4'>
-                            <label htmlFor="direccion" className="block mb-2 text-sm font-medium text-gray-900 ">Direccion</label>
-                            <input
-                                type="text"
-                                name='direccion'
-                                value={formsData.direccion}
-                                onChange={handleInputChange}
-                                id="direccion"
-                                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
-                            />
-                        </div>
-                        
                         <div className='mb-6 '>
                         <div className=''>
-                            <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 ">Asigne un status</label>
-                            <select id="countries" name='status' onChange={(e) => {
-                                        const value = e.target.value === 'true';
-                                        handleInputChange({ target: { name: e.target.name, value } });
-                                        }}className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                                <option disabled selected value= {false}>Asigne un Status</option>
-                                <option value= {true}>Activo</option>
-                                <option value={false}>Inactivo</option>
-                            </select>
+                        <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 ">Asigne un status</label>
+                        <select id="countries" name='status' onChange={(e) => {
+                                    const value = e.target.value === 'true';
+                                    handleInputChange({ target: { name: e.target.name, value } });
+                                    }}className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                            <option disabled selected value= {false}>Asigne un Status</option>
+                            <option value= {true}>Activo</option>
+                            <option value={false}>Inactivo</option>
+                        </select>
                         </div>
                         </div>
+                        <div className='grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mb-2'>
+                        <div className=''>
+                                <label htmlFor="licencianum" className="block mb-2 text-sm font-medium text-gray-900 ">Numero de Licencia</label>
+                                <input
+                                    type="text"
+                                    name='numero_licencia'
+                                    value={formsData.numero_licencia}                                    
+                                    onChange={(e) => {handleInputChange(e)}}
+                                    id="licencianum"
+                                    className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                />
+                                </div>
+                            <div className=''>
+                                <label htmlFor="select_licence_type" className="block mb-2 text-sm font-medium text-gray-900 ">Tipo de licencias</label>
+                                    <select id="select_licence_type" value={formsData.tipo_licencia} name='tipo_licencia'  onChange={(e) => {handleInputChange(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                                        <option disabled selected value= {""}>Licencia tipo:</option>
+                                        <option value= {"B"}>B</option>
+                                        <option value={"C"}>C</option>
+                                    </select>
+                            </div>
+                            </div>
                     <div>
                     <button
                             type="submit"
@@ -269,10 +275,10 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
     )
 }
 
-const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
-    const [nombre_cliente, setNombreClientes] = useState('');
-    const [apellido_cliente, setApellidoClientes] = useState('');
-    const [telefono, setTelefono] = useState('');
+const CreateModalConductores = ({ openC, handleCloseConductor, getConductores}) => {
+    const [nombre, setNombreConductor] = useState('');
+    const [apellido, setApellidoConductor] = useState('');
+    const [edad, setEdad] = useState('');
     const validateValues = (value,pattern) => {
         return pattern.test(value);
     }
@@ -282,12 +288,12 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
         const {name, value} = e.target;
         let pattern;
         switch(name){
-            case 'nombre_cliente':
-            case 'apellido_cliente':
+            case 'nombre':
+            case 'apellido':
                 pattern = /^[a-zA-ZáéóíÁÉÓÚÑñ\s]+$/;
                 break;
-            case 'telefono':
-                pattern = /^\d{0,3}-?\d{0,3}-?\d{0,4}$/;
+            case 'edad':
+                pattern = /^\d{1,2}$/;
                 break;
             default:
                 break;
@@ -296,30 +302,28 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
         const isValidValues = validateValues(value, pattern);
         if (value === '' || isValidValues) {
             let formattedInput = value;
-            if (name === 'telefono') {
-                const digitsOnly = value.replace(/[^0-9]/g, '');
-                formattedInput = digitsOnly.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
-            }
+           
             switch (name) {
-                case 'nombre_cliente':
-                    setNombreClientes(formattedInput);
+                case 'nombre':
+                    setNombreConductor(formattedInput);
                     break;
-                case 'apellido_cliente':
-                    setApellidoClientes(formattedInput);
+                case 'apellido':
+                    setApellidoConductor(formattedInput);
                     break;
-                case 'telefono':
-                    setTelefono(formattedInput);
+                case 'edad':
+                    setEdad(formattedInput);
                     break;
                 default:
                     break;
             }
         }}
     const [formsData, setFormsData] = useState({
-        nombre_cliente: '',
-        apellido_cliente: '',
-        telefono: '',
-        email: '',
-        direccion: '',
+        nombre: '',
+        apellido: '',
+        edad: '',
+        genero: '',
+        tipo_licencia: '',
+        numero_licencia: '',
         status: false,
       });
       const handleInputChange = (e) => {
@@ -333,7 +337,7 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
         e.preventDefault();
       
         console.log(formsData);
-        fetch('http://127.0.0.1:8000/v1/api/clients/register', {
+        fetch('http://127.0.0.1:8000/v1/api/drivers/register/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -352,7 +356,7 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
         .then(data => {
             console.log(data);
             toast.success('User created successfully')
-            getClients();
+            getConductores();
         })
         .catch(error => {
             console.log('error', error);
@@ -370,7 +374,7 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
                 open={openC}
-                onClose={handleCloseC}
+                onClose={handleCloseConductor}
                 closeAfterTransition
                 slots={{ backdrop: Backdrop }}
                 slotProps={{
@@ -384,8 +388,8 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
                     <>
                     <nav className='w-full p-4 grid grid-cols-1'>
                         <div className='w-full flex justify-between mb-4'>
-                        <h1 className='font-bold text-2xl text-center text-gray-900'>Crear Cuenta de colaboradro</h1>
-                        <button onClick={handleCloseC}>
+                        <h1 className='font-bold text-2xl text-center text-gray-900'>Crear Conductor</h1>
+                        <button onClick={handleCloseConductor}>
                             <svg className="w-4 h-4 text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m6 18 12-12M6 6l12 12" />
                             </svg>
@@ -395,11 +399,11 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
                         <form onSubmit={handleSubmit} className="w-full p-4">
                             <div className='w-full grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mb-4 '>
                                 <div>
-                                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">First Name</label>
+                                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">Nombre</label>
                                     <input
                                         type="text"
-                                        name='nombre_cliente'
-                                        value={nombre_cliente}
+                                        name='nombre'
+                                        value={nombre}
                                         onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
                                         id="name"
                                         placeholder='John'
@@ -407,11 +411,11 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-gray-900 ">Last name</label>
+                                    <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-gray-900 ">Apellido</label>
                                     <input
                                         type="text"
-                                        name='apellido_cliente'
-                                        value={apellido_cliente}
+                                        name='apellido'
+                                        value={apellido}
                                         placeholder='Doe'
                                         onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
                                         id="lastname"
@@ -421,56 +425,64 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
                                
                             </div>
                             <div className='mb-4'>
-                                    <label htmlFor="direccion" className="block mb-2 text-sm font-medium text-gray-900 ">Direccion</label>
+                                    <label htmlFor="edad" className="block mb-2 text-sm font-medium text-gray-900 ">Edad</label>
                                     <input
                                         type="text"
-                                        name='direccion'
-                                        placeholder='15th Av Street'
-                                        onChange={(e) => {handleInputChange(e)}}
-                                        id="lastname"
+                                        name='edad'
+                                        value={edad}
+                                        placeholder='20'
+                                        onChange={(e) => {handleInputChange(e), handlePatterns(e)}}
+                                        id="edad"
                                         className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
                                     />
                                 </div>
                             <div className='mb-2'>
-                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
+                                <label htmlFor="licencianum" className="block mb-2 text-sm font-medium text-gray-900 ">Numero de Licencia</label>
                                 <input
-                                    type="email"
-                                    name='email'
-                                    placeholder='john_doe@gamil.com'
+                                    type="text"
+                                    name='numero_licencia'
+                                    placeholder='999999999999999'
                                     onChange={(e) => {handleInputChange(e)}}
-                                    id="email"
+                                    id="licencianum"
                                     className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
                                 />
                                 </div>
+                                <div className='mb-6 '>
+                                <div className=''>
+                                    <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900 ">Asigne un status</label>
+                                    <select id="status" name='status' onChange={(e) => {
+                                                const value = e.target.value === 'true';
+                                                handleInputChange({ target: { name: e.target.name, value } });
+                                                }}className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                                        <option disabled selected value= {false}>Asigne un Status</option>
+                                        <option value= {true}>Activo</option>
+                                        <option value={false}>Inactivo</option>
+                                    </select>
+                                </div>
+                                </div>
                            
                             <div className='grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mb-2'>
-                        <div className=''>
-                        <label htmlFor="select_status" className="block mb-2 text-sm font-medium text-gray-900 ">Asigne Satatus</label>
-                                <select id="select_status" name='status'  onChange={(e) => {
-                                const value = e.target.value === 'true';
-                                handleInputChange({ target: { name: e.target.name, value } });
-                                }} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                                    <option disabled selected value= {false}>Asigne un Status</option>
-                                    <option value= {true}>Activo</option>
-                                    <option value={false}>Inactivo</option>
-                                </select>
+                            <div className=''>
+                                <label htmlFor="select_gener" className="block mb-2 text-sm font-medium text-gray-900 ">Seleccione su Genero</label>
+                                    <select id="select_gener" name='genero'  onChange={(e) => {handleInputChange(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                                        <option disabled selected value= {""}>Seleccione genero</option>
+                                        <option value= {"Masculino"}>Masculino</option>
+                                        <option value={"Femenino"}>Femenino</option>
+                                        <option value={""}>Prefiero no especificar</option>
+                                    </select>
                             </div>
-                            <div>
-                            <label htmlFor="telefono" className="block mb-2 text-sm font-medium text-gray-900 ">Telefono</label>
-                            <input
-                                type="text"
-                                name='telefono'
-                                value={telefono }
-                                onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
-                                id="telefono"
-                                placeholder='123-456-7890'
-                                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
-                            />
+                            <div className=''>
+                                <label htmlFor="select_licence_type" className="block mb-2 text-sm font-medium text-gray-900 ">Seleccione su Genero</label>
+                                    <select id="select_licence_type" name='tipo_licencia'  onChange={(e) => {handleInputChange(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                                        <option disabled selected value= {""}>Licencia tipo:</option>
+                                        <option value= {"B"}>B</option>
+                                        <option value={"C"}>C</option>
+                                    </select>
                             </div>
                             </div>
                             <div>
                             <button
-                                    type="submit" onClick={handleCloseC}
+                                    type="submit" onClick={handleCloseConductor}
                                     className="bg-white text-center w-48 rounded-2xl h-14 relative font-sans text-black text-base font-semibold group"
                                     >
                                     <div
@@ -508,4 +520,4 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
     )
 }
 
-export {UpdateModalClientes, CreateModalClientes};
+export {UpdateModalConductores, CreateModalConductores};

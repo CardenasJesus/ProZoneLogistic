@@ -2,8 +2,15 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useEffect,useState } from 'react';
+import TextField from '@mui/material/TextField';
 import toast from 'react-hot-toast';
+import dayjs from 'dayjs';
+
 
 
 const style = {
@@ -20,17 +27,15 @@ const style = {
     maxHeight: '90vh', // Altura máxima para evitar el desbordamiento
   };
  
-const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
-    const [nombre_cliente, setNombreCliente] = useState('');
-    const [apellido_cliente, setApellidoCliente] = useState('');
-    const [telefono, setTelefono] = useState('');
+const UpdateModalVehiculo = ({open, handleClose, selectedVehiculo}) => {
+    const [marca, setMarca] = useState('');
+    const [modelo, setModelo] = useState('');
+    const [numero_seguro, setNumeroSeguro] = useState('');
     const [formsData, setFormsData] = useState({
-        nombre_cliente: '',
-        apellido_cliente: '',
-        telefono: '',
-        email: '',
-        direccion: '',
-        status: ''
+        marca: '',
+        modelo: '',
+        placas: '',
+        numero_seguro: '',
       });
       const validateValues = (value,pattern) => {
         return pattern.test(value);
@@ -41,12 +46,12 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
         const {name, value} = e.target;
         let pattern;
         switch(name){
-            case 'nombre_cliente':
-            case 'apellido_cliente':
-                pattern = /^[a-zA-ZáéóíÁÉÓÚÑñ\s]+$/;
+            case 'marca':
+            case 'modelo':
+                pattern = /^[a-zA-ZáéóíÁÉÓÚÑñ0-9\s]+$/;
                 break;
-            case 'telefono':
-                pattern = /^\d{0,3}-?\d{0,3}-?\d{0,4}$/;
+            case 'numero_seguro':
+                pattern = /^[0-9]+$/;
                 break;
             default:
                 break;
@@ -55,19 +60,16 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
         const isValidValues = validateValues(value, pattern);
         if (value === '' || isValidValues) {
             let formattedInput = value;
-            if (name === 'telefono') {
-                const digitsOnly = value.replace(/[^0-9]/g, '');
-                formattedInput = digitsOnly.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
-            }
+            
             switch (name) {
-                case 'nombre_cliente':
-                    setNombreCliente(formattedInput);
+                case 'marca':
+                    setMarca(formattedInput);
                     break;
-                case 'apellido_cliente':
-                    setApellidoCliente(formattedInput);
+                case 'modelo':
+                    setModelo(formattedInput);
                     break;
-                case 'telefono':
-                    setTelefono(formattedInput);
+                case 'numero_seguro':
+                    setNumeroSeguro(formattedInput);
                     break;
                 default:
                     break;
@@ -75,20 +77,19 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
         }}
 
       useEffect(() => {
-        if (selectedUser) {
+        if (selectedVehiculo) {
           setFormsData({
-            nombre_cliente: selectedUser.nombre_cliente || '',
-            apellido_cliente: selectedUser.apellido_cliente || '',
-            telefono: selectedUser.telefono || '',
-            email: selectedUser.email || '',
-            direccion: selectedUser.direccion || '',
-            status: selectedUser.status || ''
+            marca: selectedVehiculo.marca || '',
+            modelo: selectedVehiculo.modelo || '',
+            placas: selectedVehiculo.placas || '',
+            numero_seguro: selectedVehiculo.numero_seguro || '',
+           
           });
-          setNombreCliente(selectedUser.nombre_cliente || '');
-          setApellidoCliente(selectedUser.apellido_cliente || '');
-          setTelefono(selectedUser.telefono || '');
+          setMarca(selectedVehiculo.marca || '');
+          setModelo(selectedVehiculo.modelo || '');
+          setNumeroSeguro(selectedVehiculo.numero_seguro || '');
         }
-      }, [selectedUser]);
+      }, [selectedVehiculo]);
     
       const handleInputChange = (e) => {
         setFormsData({
@@ -100,7 +101,8 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
         e.preventDefault();
         console.log(formsData);
         try {
-            const response = await fetch(`http://127.0.0.1:8000/v1/api/clients/update/${selectedUser.id}/`, {
+            // http://127.0.0.1:8000/v1/api/clients/update/${selectedVehiculo.id}/
+            const response = await fetch(``, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -110,15 +112,15 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
     
             if (response.ok) {
                 const data = await response.json();
-                toast.success('User updated');
+                toast.success('Vehicle updated');
                 console.log(data);
             } else {
-                toast.error('Error updating user');
+                toast.error('Error updating Vehicle');
                 const errorData = await response.json();
                 console.error('Error data:', errorData);
             }
         } catch (error) {
-            toast.error('Error updating user');
+            toast.error('Error updating Vehicle');
             console.error('Error:', error);
         }
     }
@@ -147,7 +149,7 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
             <>
               <nav className='w-full p-4 grid grid-cols-1 h-fit'>
                 <div className='w-full flex justify-between items-baseline'>
-                  <h1 className='font-bold text-2xl text-center'>Actualizar Informacion de clientes</h1>
+                  <h1 className='font-bold text-2xl text-center'>Actualizar Informacion deL Vehiculo</h1>
                   <button onClick={handleClose}>
                     <svg className="w-4 h-4 bg-transparent text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m6 18 12-12M6 6l12 12" />
@@ -158,77 +160,52 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
                   <form onSubmit={handleSubmit} className="w-full p-4">
                     <div className='w-full grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mb-4'>
                         <div>
-                            <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">Nombre</label>
+                            <label htmlFor="marca" className="block mb-2 text-sm font-medium text-gray-900 ">Marca</label>
                             <input
                                 type="text"
-                                name='nombre_cliente'
-                                value={nombre_cliente}
+                                name='marca'
+                                value={marca}
                                 onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
-                                id="name"
+                                id="marca"
                                 className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
                             />
                         </div>
                         <div>
-                            <label htmlFor="apellido" className="block mb-2 text-sm font-medium text-gray-900 ">Apellido</label>
+                            <label htmlFor="modelo" className="block mb-2 text-sm font-medium text-gray-900 ">Modelo</label>
                             <input
                                 type="text"
-                                name='apellido_cliente'
-                                value={apellido_cliente}
+                                name='modelo'
+                                value={modelo}
                                 onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
-                                id="apellido"
+                                id="modelo"
                                 className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
                             />
                         </div>
                     </div>
                     <div className='w-full grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4'>
                     <div className='mb-4'>
-                            <label htmlFor="telefono" className="block mb-2 text-sm font-medium text-gray-900 ">Telefono</label>
+                            <label htmlFor="seguro" className="block mb-2 text-sm font-medium text-gray-900 ">Numero de seguro</label>
                             <input
                                 type="text"
-                                name='telefono'
-                                value={telefono}
+                                name='numero_seguro'
+                                value={numero_seguro}
                                 onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
-                                id="telefono"
+                                id="seguro"
                                 className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
                             />
                         </div>
                         <div className='mb-6'>
-                            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
+                            <label htmlFor="placas" className="block mb-2 text-sm font-medium text-gray-900 ">Placas</label>
                             <input
-                                type="email"
-                                name='email'
-                                value={formsData.email}
+                                type="text"
+                                name='placas'
+                                value={formsData.placas}
                                 onChange={handleInputChange}
-                                id="email"
+                                id="placas"
                                 className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
                             />
                         </div>
                     </div>
-                    <div className='mb-4'>
-                            <label htmlFor="direccion" className="block mb-2 text-sm font-medium text-gray-900 ">Direccion</label>
-                            <input
-                                type="text"
-                                name='direccion'
-                                value={formsData.direccion}
-                                onChange={handleInputChange}
-                                id="direccion"
-                                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
-                            />
-                        </div>
-                        
-                        <div className='mb-6 '>
-                        <div className=''>
-                            <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 ">Asigne un status</label>
-                            <select id="countries" name='status' onChange={(e) => {
-                                        const value = e.target.value === 'true';
-                                        handleInputChange({ target: { name: e.target.name, value } });
-                                        }}className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                                <option disabled selected value= {false}>Asigne un Status</option>
-                                <option value= {true}>Activo</option>
-                                <option value={false}>Inactivo</option>
-                            </select>
-                        </div>
-                        </div>
                     <div>
                     <button
                             type="submit"
@@ -269,10 +246,9 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
     )
 }
 
-const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
-    const [nombre_cliente, setNombreClientes] = useState('');
-    const [apellido_cliente, setApellidoClientes] = useState('');
-    const [telefono, setTelefono] = useState('');
+const CreateModalVehiculo = ({ openVehiculo, handleCloseVehiculo, getVehiculos}) => {
+    const [marca, setMarca] = useState('');
+    const [modelo, setModelo] = useState('');
     const validateValues = (value,pattern) => {
         return pattern.test(value);
     }
@@ -282,12 +258,9 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
         const {name, value} = e.target;
         let pattern;
         switch(name){
-            case 'nombre_cliente':
-            case 'apellido_cliente':
-                pattern = /^[a-zA-ZáéóíÁÉÓÚÑñ\s]+$/;
-                break;
-            case 'telefono':
-                pattern = /^\d{0,3}-?\d{0,3}-?\d{0,4}$/;
+            case 'marca':
+            case 'modelo':
+                pattern = /^[a-zA-ZáéóíÁÉÓÚÑñ0-9\s]+$/;
                 break;
             default:
                 break;
@@ -296,30 +269,23 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
         const isValidValues = validateValues(value, pattern);
         if (value === '' || isValidValues) {
             let formattedInput = value;
-            if (name === 'telefono') {
-                const digitsOnly = value.replace(/[^0-9]/g, '');
-                formattedInput = digitsOnly.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
-            }
             switch (name) {
-                case 'nombre_cliente':
-                    setNombreClientes(formattedInput);
+                case 'marca':
+                    setMarca(formattedInput);
                     break;
-                case 'apellido_cliente':
-                    setApellidoClientes(formattedInput);
-                    break;
-                case 'telefono':
-                    setTelefono(formattedInput);
+                case 'modelo':
+                    setModelo(formattedInput);
                     break;
                 default:
                     break;
             }
         }}
     const [formsData, setFormsData] = useState({
-        nombre_cliente: '',
-        apellido_cliente: '',
-        telefono: '',
-        email: '',
-        direccion: '',
+        marca: '',
+        modelo: '',
+        placas: '',
+        numero_seguro: '',
+        fecha_fabricacion: null,
         status: false,
       });
       const handleInputChange = (e) => {
@@ -329,16 +295,25 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
           [e.target.name]: e.target.value
         });
       };
-    const CreateUser = async (e) => {
+
+      const handleDateChange = (name, date) => {
+        setFormsData({
+            ...formsData,
+            [name]: date
+        });
+    };
+    const createVehiculo = async (e) => {
         e.preventDefault();
-      
-        console.log(formsData);
-        fetch('http://127.0.0.1:8000/v1/api/clients/register', {
+        const formattedData = {
+            ...formsData,
+            fecha_fabricacion: formsData.fecha_fabricacion ? dayjs(formsData.fecha_fabricacion).format('YYYY-MM-DD') : '',
+        };
+        fetch('http://127.0.0.1:8000/v1/api/vehicles/register/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(formsData)
+            body: JSON.stringify(formattedData)
         })
         .then(response => {
             if(response.ok){
@@ -352,7 +327,7 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
         .then(data => {
             console.log(data);
             toast.success('User created successfully')
-            getClients();
+            getVehiculos();
         })
         .catch(error => {
             console.log('error', error);
@@ -360,17 +335,13 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
         })  
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        CreateUser(e)
-        }
     return(
         <>
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
-                open={openC}
-                onClose={handleCloseC}
+                open={openVehiculo}
+                onClose={handleCloseVehiculo}
                 closeAfterTransition
                 slots={{ backdrop: Backdrop }}
                 slotProps={{
@@ -379,27 +350,27 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
                 },
                 }}
             >
-                <Fade in={openC}>
+                <Fade in={openVehiculo}>
                 <Box sx={style}>
                     <>
                     <nav className='w-full p-4 grid grid-cols-1'>
                         <div className='w-full flex justify-between mb-4'>
                         <h1 className='font-bold text-2xl text-center text-gray-900'>Crear Cuenta de colaboradro</h1>
-                        <button onClick={handleCloseC}>
+                        <button onClick={handleCloseVehiculo}>
                             <svg className="w-4 h-4 text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m6 18 12-12M6 6l12 12" />
                             </svg>
                         </button>
                         </div>
                         <div className='w-full flex justify-center items-center content-center'>
-                        <form onSubmit={handleSubmit} className="w-full p-4">
+                        <form onSubmit={createVehiculo} className="w-full p-4">
                             <div className='w-full grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mb-4 '>
                                 <div>
-                                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">First Name</label>
+                                    <label htmlFor="marca" className="block mb-2 text-sm font-medium text-gray-900 ">Marca</label>
                                     <input
                                         type="text"
-                                        name='nombre_cliente'
-                                        value={nombre_cliente}
+                                        name='marca'
+                                        value={marca}
                                         onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
                                         id="name"
                                         placeholder='John'
@@ -407,38 +378,38 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-gray-900 ">Last name</label>
+                                    <label htmlFor="modelo" className="block mb-2 text-sm font-medium text-gray-900 ">Modelo</label>
                                     <input
                                         type="text"
-                                        name='apellido_cliente'
-                                        value={apellido_cliente}
-                                        placeholder='Doe'
+                                        name='modelo'
+                                        value={modelo}
+                                        placeholder='Turbo '
                                         onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
-                                        id="lastname"
+                                        id="modelo"
                                         className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
                                     />
                                 </div>
                                
                             </div>
                             <div className='mb-4'>
-                                    <label htmlFor="direccion" className="block mb-2 text-sm font-medium text-gray-900 ">Direccion</label>
+                                    <label htmlFor="placas" className="block mb-2 text-sm font-medium text-gray-900 ">Placas</label>
                                     <input
                                         type="text"
-                                        name='direccion'
-                                        placeholder='15th Av Street'
+                                        name='placas'
+                                        placeholder='AXX-XXX'
                                         onChange={(e) => {handleInputChange(e)}}
                                         id="lastname"
                                         className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
                                     />
                                 </div>
                             <div className='mb-2'>
-                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
+                                <label htmlFor="seguro" className="block mb-2 text-sm font-medium text-gray-900 ">Numero de Seguro</label>
                                 <input
-                                    type="email"
-                                    name='email'
-                                    placeholder='john_doe@gamil.com'
+                                    type="text"
+                                    name='numero_seguro'
+                                    placeholder='111122226565'
                                     onChange={(e) => {handleInputChange(e)}}
-                                    id="email"
+                                    id="seguro"
                                     className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
                                 />
                                 </div>
@@ -455,22 +426,31 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
                                     <option value={false}>Inactivo</option>
                                 </select>
                             </div>
-                            <div>
-                            <label htmlFor="telefono" className="block mb-2 text-sm font-medium text-gray-900 ">Telefono</label>
-                            <input
-                                type="text"
-                                name='telefono'
-                                value={telefono }
-                                onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
-                                id="telefono"
-                                placeholder='123-456-7890'
-                                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
-                            />
-                            </div>
+                                <div className='w-full'>
+                                <label htmlFor="fecha_fabricacion" className="block  text-sm font-medium text-gray-900 dark:text-white">Fecha de Fabricacion: </label>
+                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                        <DemoContainer components={['DatePicker']}>
+                                        <DatePicker
+                                            label="Fecha de Fabricacion"
+                                            value={formsData.fecha_fabricacion}
+                                            onChange={(date) => handleDateChange('fecha_fabricacion', date)}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    fullWidth
+                                                    InputProps={{
+                                                        style: { width: '100%' }
+                                                    }}
+                                                />
+                                            )}
+                                        />
+                                        </DemoContainer>
+                                    </LocalizationProvider>
+                                </div>
                             </div>
                             <div>
                             <button
-                                    type="submit" onClick={handleCloseC}
+                                    type="submit" onClick={handleCloseVehiculo}
                                     className="bg-white text-center w-48 rounded-2xl h-14 relative font-sans text-black text-base font-semibold group"
                                     >
                                     <div
@@ -508,4 +488,4 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
     )
 }
 
-export {UpdateModalClientes, CreateModalClientes};
+export {UpdateModalVehiculo, CreateModalVehiculo};

@@ -12,6 +12,9 @@ import CatalogoProductos from "./routes/pages/catalogo_Productos"
 import ManageProductos from "./routes/pages/manageProducto"
 import ProveedoresPage from "./routes/pages/proveedoresPage"
 import LotesPage from './routes/pages/lotespage'
+import ManageConductores from './routes/pages/manageConductores'
+import VehiculosPage from './routes/pages/vehiculosPage'
+import RutasPage from './routes/pages/rutasPage'
 import NotFound from './routes/pages/404'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
@@ -32,6 +35,18 @@ const router = createBrowserRouter([
   {
     path: "/administrar/envios",
     element: <ProtectedRoute element={<AdminPage />} />
+  },
+  {
+    path: "/administrar/envios/conductores",
+    element: <ProtectedRoute element={<ManageConductores />}/>
+  },
+  {
+    path: "/administrar/envios/vehiculos",
+    element: <ProtectedRoute element={<VehiculosPage />}/>
+  },
+  {
+    path: "/administrar/envios/rutas",
+    element: <ProtectedRoute element={<RutasPage />}/>
   },
   {
     path: "/administrar/colaboradores",
