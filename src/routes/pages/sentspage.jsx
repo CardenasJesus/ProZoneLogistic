@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import SideBar from '../../components/sidebar';
-import Main from '../../components/services/sent/main';
+import Main from '../../components/envios/main';
+import ManageEnvios from '../../components/envios/manageEnvios';
+import EnviosPendientes from '../../components/envios/enviosEnprogreso';
 
 const AdminPage = () => {
 
@@ -15,8 +17,10 @@ const AdminPage = () => {
             isSidebarOpen = {isSidebarOpen}
           />
           <section className={`p-4 mt-12 transition-all duration-300 ${isSidebarOpen ? 'sm:ml-52' : 'sm:ml-0'}`} >
-            <div className='flex justify-center content-center items-center'>
+            <div className='flex flex-col justify-center content-center items-center'>
+                <ManageEnvios />
                 <Main />
+                <EnviosPendientes/>
             </div>
           </section>
         </>

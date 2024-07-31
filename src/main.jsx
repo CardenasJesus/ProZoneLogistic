@@ -30,51 +30,51 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <ProtectedRoute element={<Dashboard />} />
+    element: <ProtectedRoute element={<Dashboard />} allowedRoles={['empleado', 'conductor']} />
   },
   {
     path: "/administrar/envios",
-    element: <ProtectedRoute element={<AdminPage />} />
+    element: <ProtectedRoute element={<AdminPage />} allowedRoles={['empleado']} />
   },
   {
     path: "/administrar/envios/conductores",
-    element: <ProtectedRoute element={<ManageConductores />}/>
+    element: <ProtectedRoute element={<ManageConductores />} allowedRoles={['empleado']} />
   },
   {
     path: "/administrar/envios/vehiculos",
-    element: <ProtectedRoute element={<VehiculosPage />}/>
+    element: <ProtectedRoute element={<VehiculosPage />} allowedRoles={['empleado']} />
   },
   {
     path: "/administrar/envios/rutas",
-    element: <ProtectedRoute element={<RutasPage />}/>
+    element: <ProtectedRoute element={<RutasPage />} allowedRoles={['empleado']} />
   },
   {
     path: "/administrar/colaboradores",
-    element: <ProtectedRoute element={<AdministrarColab />}/>
+    element: <ProtectedRoute element={<AdministrarColab />} allowedRoles={['empleado']} />
   },
   {
     path: "/administrar/pedidos",
-    element: <ProtectedRoute element={<ManagePedidos />}/>
+    element: <ProtectedRoute element={<ManagePedidos />} allowedRoles={['empleado']} />
   },
   {
     path: "/administrar/clientes",
-    element: <ProtectedRoute element={<ManageClients />}/>
+    element: <ProtectedRoute element={<ManageClients />} allowedRoles={['empleado']} />
   },
   {
     path: "/administrar/catalogo/productos",
-    element: <ProtectedRoute element={<CatalogoProductos />}/>
+    element: <ProtectedRoute element={<CatalogoProductos />} allowedRoles={['empleado']} />
   },
   {
     path: "/administrar/productos/",
-    element: <ProtectedRoute element={<ManageProductos />}/>
+    element: <ProtectedRoute element={<ManageProductos />} allowedRoles={['empleado']} />
   },
   {
     path: "/administrar/producto/proveedor",
-    element: <ProtectedRoute element={<ProveedoresPage />}/>
+    element: <ProtectedRoute element={<ProveedoresPage />} allowedRoles={['empleado']} />
   },
   {
     path: "/administrar/producto/lotes",
-    element: <ProtectedRoute element={<LotesPage />}/>
+    element: <ProtectedRoute element={<LotesPage />} allowedRoles={['empleado']} />
   },
   {
     path: "*",

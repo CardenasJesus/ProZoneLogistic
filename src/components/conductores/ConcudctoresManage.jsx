@@ -1,13 +1,31 @@
-import { UpdateModalConductores } from "./modales/modal";
+import axios from "axios";
+import { UpdateModalConductores,AsignarVehiculoModal } from "./modales/modal";
 import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 const ConductoresManage = ({Conductores}) => {
     const [open, setOpen] = useState(false);
+    const [openVA, setOpenVA] = useState(false);
     const [selectedConductor, setSelectedConductor] = useState({});
+    const [vehiculos, setVehiculos] = useState([]);
     const [statuses, setStatuses] = useState([]);
     const handleOpenConductorUpd = () => setOpen(true);
     const handleCloseConductorUpd = () => setOpen(false);
+    const handleOpenVehiculoAsignar = () => setOpenVA(true);
+    const handleCloseVehiculoAsignar = () => setOpenVA(false);
+
+    const getVehiculos = () => {
+        axios.get('http://127.0.0.1:8000/v1/api/vehicles/asign/')
+         .then((response) => {
+                setVehiculos(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        }
+        useEffect(() => {
+            getVehiculos();
+        }, []);
     useEffect(() => {
         if (Conductores && Conductores.length > 0) {
             setStatuses(Conductores.map(item => item.status));
@@ -50,6 +68,7 @@ const ConductoresManage = ({Conductores}) => {
             <span className="sr-only">Loading...</span>
         </div>
     };
+       
     return (
         <>
             <UpdateModalConductores 
@@ -57,6 +76,14 @@ const ConductoresManage = ({Conductores}) => {
             handleOpen={handleOpenConductorUpd}
             handleCloseConductorUpd={handleCloseConductorUpd}
             selectedConductor={selectedConductor}
+
+        />
+         <AsignarVehiculoModal 
+            open={openVA}
+            handleOpen={handleOpenVehiculoAsignar}
+            handleCloseConductorUpd={handleCloseVehiculoAsignar}
+            selectedConductor={Conductores}
+            vehiculos={vehiculos}
         />
          <Toaster
         position="top-center"
@@ -64,6 +91,7 @@ const ConductoresManage = ({Conductores}) => {
         />
           <section className="w-full">
             <div className="bg-green-500 shadow-md rounded-bl-2xl rounded-tr-2xl w-fit"><h1 className="font-bold text-2xl p-4 text-gray-100">Gestionar Conductores</h1></div>
+            <button onClick={handleOpenVehiculoAsignar}>Asignar Vehiculo</button>
             <div className="p-4">
                 <div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
@@ -79,10 +107,16 @@ const ConductoresManage = ({Conductores}) => {
                                     Genero
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
+                                    Telefono
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-center">
+                                    Email
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-center">
                                     Tipo de Licencia
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
-                                    # Licencia
+                                    Numero de Licencia
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
                                     Actualizar
@@ -103,6 +137,12 @@ const ConductoresManage = ({Conductores}) => {
                                         </td>
                                         <td className="px-6 py-4 text-center">
                                             {data.genero}
+                                        </td>
+                                        <td className="px-6 py-4 text-center">
+                                            {data.telefono}
+                                        </td>
+                                        <td className="px-6 py-4 text-center">
+                                            {data.email}
                                         </td>
                                         <td className="px-6 py-4 text-center">
                                             {data.tipo_licencia}

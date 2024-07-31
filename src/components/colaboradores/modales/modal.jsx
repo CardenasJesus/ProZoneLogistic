@@ -283,16 +283,18 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
             response.json()
             }else{
                 (error => {
-                    throw error || 'Error updating user'
+                    throw error || 'Error creating Employee'
                 })
             }
         })
         .then(data => {
             console.log(data);
+            toast.success('Employee created')
             getUsers();
         })
         .catch(error => {
             console.log('error', error);
+            toast.error('Error creating Employee')
         })  
     }
 

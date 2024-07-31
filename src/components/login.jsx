@@ -12,11 +12,18 @@ function Login () {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await LoginFunc(username, password);
-            toast.success('You have successfully logged in.');
-            setTimeout(() => {
-                navigate('/dashboard');
-            }, 3000);
+            const result = await LoginFunc(username, password);
+            if (result) {
+                // Solo muestra el mensaje de éxito y redirige si el resultado no es null
+                toast.success('You have successfully logged in.');
+                setTimeout(() => {
+                    navigate('/dashboard');
+                }, 3000);
+            } else {
+                // No se muestra ninguna notificación si el resultado es null (usuario es conductor)
+                // Puedes opcionalmente mostrar una alerta o mensaje genérico si lo prefieres
+                toast.error('Access denied. You do not have the required permissions.');
+            }
         } catch (error) {
             console.error('Error logging in', error);
             toast.error('Invalid credentials, please try again.');

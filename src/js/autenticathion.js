@@ -3,13 +3,34 @@ import axios from 'axios';
 const API_URL = 'http://127.0.0.1:8000/v1/api/token/';
 
 export const LoginFunc = async (username, password) => {
-    const response = await axios.post(`${API_URL}`, { username, password });
-    if (response.data.access) {
-        localStorage.setItem('access', response.data.access);
-        localStorage.setItem('refresh', response.data.refresh);
-        localStorage.setItem('user', JSON.stringify(response.data));
+    try {
+        const response = await axios.post(`${API_URL}`, { username, password });
+        
+        // Verifica si el usuario es un conductor
+        if (response.data.conductor) {
+            // Limpiar el almacenamiento local
+            localStorage.removeItem('access');
+            localStorage.removeItem('refresh');
+            localStorage.removeItem('user');
+            
+            // Redirigir a la página de inicio
+            window.location.href = "/";
+            return null;
+        }
+
+        // Guarda el token y la información del usuario si no es conductor
+        if (response.data.access) {
+            localStorage.setItem('access', response.data.access);
+            localStorage.setItem('refresh', response.data.refresh);
+            localStorage.setItem('user', JSON.stringify(response.data));
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error("Error al iniciar sesión:", error);
+        // Manejo de errores adicional si es necesario
+        throw error;
     }
-    return response.data;
 };
 
 export const Logout = () => {

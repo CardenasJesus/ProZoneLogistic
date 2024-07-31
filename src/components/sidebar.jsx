@@ -8,6 +8,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 // eslint-disable-next-line react/prop-types
 const SideBar = ({toggleSidebar, isSidebarOpen}) => {
     const stored = JSON.parse(localStorage.getItem('user'));
+    const isEmpleado = stored && stored.empleado;
+    const isConductor = stored && stored.conductor;
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isDropdownBottomOpen, setIsDropdownBottomOpen] = useState(false);
     const [isDropOpen, setIsDropOpen] = useState(false);
@@ -97,12 +99,22 @@ const SideBar = ({toggleSidebar, isSidebarOpen}) => {
 
                                 <div id='dropUsermenu' className={`z-50 ${isDropdownOpen ? 'block' : 'hidden'} absolute mt-2 w-48 bg-white divide-y divide-gray-100 rounded shadow  top-12 right-12`}>
                                     <div className="px-4 py-3" role="none">
-                                        <p className="text-sm text-gray-900 " role="none">
-                                        {stored.empleado.nombre} {stored.empleado.apellido}
-                                        </p>
-                                        <p className="text-sm font-medium text-gray-900 truncate " role="none">
-                                        {stored.empleado.email}
-                                        </p>
+                                    {isEmpleado && (
+                                        <div>
+                                            <p>{stored.empleado.nombre} {stored.empleado.apellido}</p>
+                                            <p className="text-sm font-medium text-gray-900 truncate" role="none">
+                                            {stored.empleado.email}
+                                            </p>
+                                        </div>
+                                        )}
+                                        {isConductor && (
+                                        <div>
+                                            <p>{stored.conductor.nombre} {stored.conductor.apellido}</p>
+                                            <p className="text-sm font-medium text-gray-900 truncate" role="none">
+                                            {stored.conductor.email}
+                                            </p>
+                                        </div>
+                                        )}
                                     </div>
                                     <ul className="py-1" role="none">
                                         <li>
@@ -288,7 +300,7 @@ const SideBar = ({toggleSidebar, isSidebarOpen}) => {
                                 <Link to={"/administrar/envios"}  className="flex items-center justify-start w-full py-2 px-4 text-sm text-gray-800">
                                         <svg className="w-4 h-4 text-gray-800 dark:text-white mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7"/>
-                                        </svg>Gestion de envios</Link>
+                                        </svg>Monitoreo de envios</Link>
                                 </li>
                                 <li>
                                 <Link to={"/administrar/envios/conductores"}  className="flex items-center justify-start w-full py-2 px-4 text-sm text-gray-800">
@@ -331,7 +343,7 @@ const SideBar = ({toggleSidebar, isSidebarOpen}) => {
                                 <Link to={"/administrar/pedidos"}  className="flex items-center justify-start w-full py-2 px-4 text-sm text-gray-800">
                                         <svg className="w-4 h-4 text-gray-800 dark:text-white mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7"/>
-                                        </svg>Administrar Pedidos</Link>
+                                        </svg>Generar Pedidos</Link>
                                 </li>
                                 <li>
                                 <Link to={"/administrar/pedidos"}  className="flex items-center justify-start w-full py-2 px-4 text-sm text-gray-800">
@@ -341,25 +353,7 @@ const SideBar = ({toggleSidebar, isSidebarOpen}) => {
                                 </li>
                                 </ul>
                             </div>
-                        </li>
-                        <li>
-                            <Link
-                                to={"/dashboard"}
-                                className="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100 group"
-                            >
-                                <svg
-                                    className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 "
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path d="M10 0a3 3 0 0 0-3 3v1H3a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3h-4V3a3 3 0 0 0-3-3Zm0 2a1 1 0 0 1 1 1v1h-2V3a1 1 0 0 1 1-1ZM3 7h14v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7Z" />
-                                </svg>
-                                <span className="ms-3">Help</span>
-                            </Link>
-                        </li>
-                        
+                        </li>                        
                     </ul>
                     <div className='w-full fixed bottom-0 text-gray-800'>
                             <dt className='flex items-center w-full p-2 text-gray-900 rounded-lg bg-transparent hover:bg-gray-100 hover:text-purple-300 cursor-pointer '>
