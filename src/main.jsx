@@ -16,6 +16,7 @@ import ManageConductores from './routes/pages/manageConductores'
 import VehiculosPage from './routes/pages/vehiculosPage'
 import RutasPage from './routes/pages/rutasPage'
 import NotFound from './routes/pages/404'
+import PedidosShown from './routes/pages/pedidosShown'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
   {
     path: "/administrar/pedidos",
     element: <ProtectedRoute element={<ManagePedidos />} allowedRoles={['empleado']} />
+  },
+  {
+    path: "/administrar/pedidos/historial",
+    element: <ProtectedRoute element={<PedidosShown />} allowedRoles={['empleado']} />
   },
   {
     path: "/administrar/clientes",

@@ -8,13 +8,13 @@ import axios from "axios";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable'; // Para tablas, si es necesario
 
-const ITEMS_PER_PAGE = 5; // Ajusta el número según tus necesidades
+const ITEMS_PER_PAGE = 6; // Ajusta el número según tus necesidades
 
 const ManageEnvios = () => {
     const [Envios, setEnvios] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-
-    // Calcular el índice inicial y final para la página actual
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
 
@@ -31,16 +31,18 @@ const ManageEnvios = () => {
     };
 
     useEffect(() => {
-        event.preventDefault();
         axios.get('http://127.0.0.1:8000/v1/api/envios/')
         .then(response => {
             setEnvios(response.data);
+            setLoading(false);
         })
         .catch(error => {
-            console.log(error);
+            setError(error);
+            setLoading(false);
         });
     }, []);
-    if (Envios === undefined || Envios.length === 0) {
+    
+    if (loading) {
         return <div role="status">
             <svg aria-hidden="true" className="inline w-8 h-8 text-gray-200 animate-spin  fill-red-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
@@ -48,6 +50,8 @@ const ManageEnvios = () => {
             </svg>
             <span className="sr-only">Loading...</span>
         </div>
+    }if (error) {
+        return <div>Error: {error.message}</div>;
     }
     const getStepClass = (step, currentStatus) => {
         const statusSteps = {
@@ -63,16 +67,21 @@ const ManageEnvios = () => {
     };
     const handleExport = (envio) => {
         const doc = new jsPDF();
-    
+        const fontSize = 10; // Cambia este valor para ajustar el tamaño de la fuente
+        doc.setFontSize(fontSize);
         // Configuración de la imagen
         const logoUrl = '/1.png'; // Ruta a tu logo
-    
+        const Sello = '/sello.png'; // Ruta a tu logo
+        const fondo = '/fondopdf.png'; // Ruta a tu logo
         // Ancho de la página (A4)
         const pageWidth = doc.internal.pageSize.getWidth();
-    
-        // Agregar el logo en la parte superior izquierda
-        doc.addImage(logoUrl, 'PNG', 10, 10, 40, 20); // Ajusta la posición y tamaño de la imagen
-    
+        const pageHeight = doc.internal.pageSize.getHeight();
+        
+        // Agregar la imagen de fondo
+        // Agregar la imagen con las coordenadas x=0, y=0 y cubrir toda la página
+        doc.addImage(fondo, 'PNG', 0, 0, pageWidth, pageHeight);
+        doc.addImage(logoUrl, 'PNG', 10, 10, 40, 20); 
+        doc.addImage(Sello, 'PNG', pageWidth - 50, 250, 40, 40); 
         // Obtener la fecha actual
         const today = new Date();
         const formattedDate = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
@@ -81,20 +90,32 @@ const ManageEnvios = () => {
         doc.text(formattedDate, pageWidth - 10 - 30, 15, { align: 'right' }); // Ajusta la posición
     
         // Contenido de texto
-        doc.text(`Detalles de Envio! ${envio.id}`, 10, 40);
-        doc.text(`El estado del envio ${envio.id} actualmente es ${envio.status}`, 10, 50);
+        doc.text(`Detalles de Envio ${envio.id} !`, 10, 40);
+        doc.text(`Aprobado por ${envio.colaborador.nombre} ${envio.colaborador.apellido} con ID ${envio.colaborador.id}`, 10, 50);
+        doc.text(`El estado del envio ${envio.id} actualmente es "${envio.status}"`, 10, 60, );
     
         // Configuración de la tabla
         const tableColumn = ['Información', 'Detalle'];
         const tableRows = [
-            ['ID', envio.id],
             ['Descripción', envio.descripcion],
             ['Fecha de Envio', envio.fecha_envio],
             ['Fecha de Entrega', envio.fecha_entrega],
             ['Observaciones', envio.observaciones],
             ['Ruta', envio.ruta.nombre_ruta],
-            ['Conductor', `${envio.conductor.nombre} ${envio.conductor.apellido}`],
-            ['Pedido', envio.pedido]
+        ];
+        const tableColumn2 = ['Conductor', 'Detalle'];
+        const tableRows2 = [
+            ['Nombre',envio.conductor.nombre + envio.conductor.apellido],
+            ['Telefono',envio.conductor.telefono],
+            ['Email',envio.conductor.email],
+        ];
+        const tableColumn3 = ['Pedido', 'Detalle'];
+        const tableRows3 = [
+            ['ID',envio.pedido.id],
+            ['Fecha de Pedido',envio.pedido.fecha_pedido],
+            ['Cliente',envio.pedido.cliente.nombre_cliente + envio.pedido.cliente.apellido_cliente],
+            ['Direccion',envio.pedido.calle +"," + envio.pedido.num_exterior +"," + envio.pedido.colonia +"," + envio.pedido.codigo_postal],
+            ['Total',envio.pedido.precio_total],
         ];
     
         // Tamaño de la tabla
@@ -107,7 +128,27 @@ const ManageEnvios = () => {
         doc.autoTable({
             head: [tableColumn],
             body: tableRows,
-            startY: 60, // Ajusta la posición vertical de la tabla si es necesario
+            startY: 70, // Ajusta la posición vertical de la tabla si es necesario
+            margin: { left: marginLeft }, // Margen izquierdo para centrar la tabla
+            styles: {
+                cellPadding: 3, // Ajusta el relleno de las celdas
+                fontSize: 10, // Tamaño de fuente
+            }
+        });
+        doc.autoTable({
+            head: [tableColumn2],
+            body: tableRows2,
+            startY: 140, // Ajusta la posición vertical de la tabla si es necesario
+            margin: { left: marginLeft }, // Margen izquierdo para centrar la tabla
+            styles: {
+                cellPadding: 3, // Ajusta el relleno de las celdas
+                fontSize: 10, // Tamaño de fuente
+            }
+        });
+        doc.autoTable({
+            head: [tableColumn3],
+            body: tableRows3,
+            startY: 190, // Ajusta la posición vertical de la tabla si es necesario
             margin: { left: marginLeft }, // Margen izquierdo para centrar la tabla
             styles: {
                 cellPadding: 3, // Ajusta el relleno de las celdas
@@ -138,14 +179,7 @@ const ManageEnvios = () => {
                     <div
                         className="relative flex h-full w-full transform justify-center text-center items-center border-2 border-gray-200 bg-white transition-transform group-hover:scale-105 shadow-xl"
                     >
-                        <button
-                            className="fixed top-0 right-0 bg-transparent"
-                            onClick={() => handleExport(envio)}
-                        >
-                            <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" strokeLinejoin="round" strokeWidth="2" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
-                            </svg>
-                        </button>
+                        
 
                         <div
                         className="p-6 transition-opacity group-hover:absolute group-hover:opacity-0 w-full justify-center">
@@ -183,7 +217,15 @@ const ManageEnvios = () => {
                         <div
                         className="absolute p-8 opacity-0 transition-opacity group-hover:relative group-hover:opacity-100 "
                         >
-                        <div className="flex justify-end"> <h3 className="text-sms font-medium sm:text-md">Pedido: {envio.pedido}</h3></div>
+                            <button
+                            className="fixed top-0 right-0 bg-transparent"
+                            onClick={() => handleExport(envio)}
+                        >
+                            <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" strokeLinejoin="round" strokeWidth="2" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
+                            </svg>
+                        </button>
+                        <div className="flex justify-end"> <h3 className="text-sms font-medium sm:text-md">Pedido: {envio.pedido.id}</h3></div>
                         <h3 className="text-sms font-medium sm:text-md text-red-500 mt-2 text-center text-clip">{envio.descripcion}</h3>
                         <p className="mt-4 text-sm sm:text-base flex flex-col justify-center text-center items-center">
                             <span className="font-bold text-black">Observaciones:</span>

@@ -376,6 +376,7 @@ const CreateModalConductores = ({ openC, handleCloseConductor, getConductores}) 
         genero: '',
         telefono: '',
         email: '',
+        password: '',
         tipo_licencia: '',
         numero_licencia: '',
         status: false,
@@ -503,7 +504,7 @@ const CreateModalConductores = ({ openC, handleCloseConductor, getConductores}) 
                                         className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
                                     />
                                 </div>
-                                <div>
+                                <div className='mb-2'>
                                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Correo</label>
                                     <input
                                         type='email'
@@ -515,6 +516,17 @@ const CreateModalConductores = ({ openC, handleCloseConductor, getConductores}) 
                                     />
                                 </div>
                                 </div>
+                                <div className='mb-2'>
+                                            <label htmlFor="pass" className="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
+                                            <input
+                                                type='password'
+                                                name='password'
+                                                onChange={(e) => { handleInputChange(e) }}
+                                                id="pass"
+                                                placeholder='* * * * * * * *'
+                                                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                            />
+                                        </div>
                             <div className='mb-2'>
                                 <label htmlFor="licencianum" className="block mb-2 text-sm font-medium text-gray-900 ">Numero de Licencia</label>
                                 <input

@@ -5,7 +5,6 @@ import ManageEnvios from '../../components/envios/manageEnvios';
 import EnviosPendientes from '../../components/envios/enviosEnprogreso';
 
 const AdminPage = () => {
-
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const toggleSidebar = () => {
           setIsSidebarOpen(!isSidebarOpen);

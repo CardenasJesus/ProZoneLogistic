@@ -346,7 +346,7 @@ const SideBar = ({toggleSidebar, isSidebarOpen}) => {
                                         </svg>Generar Pedidos</Link>
                                 </li>
                                 <li>
-                                <Link to={"/administrar/pedidos"}  className="flex items-center justify-start w-full py-2 px-4 text-sm text-gray-800">
+                                <Link to={"/administrar/pedidos/historial"}  className="flex items-center justify-start w-full py-2 px-4 text-sm text-gray-800">
                                         <svg className="w-4 h-4 text-gray-800 dark:text-white mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7"/>
                                         </svg>Historial</Link>
