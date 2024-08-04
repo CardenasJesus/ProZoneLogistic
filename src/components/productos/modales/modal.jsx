@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import { useEffect,useState } from 'react';
 import toast from 'react-hot-toast';
+import { APIBASE } from '../../../js/urls';
 
 
 const style = {
@@ -64,7 +65,7 @@ const UpdateModal = ({open, handleClose, selectProducto}) => {
             formData.append('imagen_producto', imagenProducto);
         }
 
-        fetch(`http://127.0.0.1:8000/v1/api/products/update/${selectProducto.id}/`, {
+        fetch(`${APIBASE}v1/api/products/update/${selectProducto.id}/`, {
             method: 'PUT',
             body: formData,
         })
@@ -283,7 +284,7 @@ const CreateModal = ({ openC, handleCloseProducto, getProductos}) => {
             formData.append('imagen_producto', imagenProducto);
         }
 
-        fetch('http://127.0.0.1:8000/v1/api/products/register', {
+        fetch(`${APIBASE}v1/api/products/register`, {
             method: 'POST',
             body: formData,
         })

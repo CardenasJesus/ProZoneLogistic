@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import SideBar from '../../components/sidebar';
 import ManageLotes from '../../components/Lotes/ManageLotes'
 import {CreateModalLotes} from '../../components/Lotes/modales/modal'
+import { APIBASE } from '../../js/urls';
 
 const LotesPage = () =>{
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -12,7 +13,7 @@ const LotesPage = () =>{
     const getLotes = async () => {
         try {
             // http://127.0.0.1:8000/v1/api/lotes/
-            const response = await fetch('http://127.0.0.1:8000/v1/api/lotes/');
+            const response = await fetch(`${APIBASE}v1/api/lotes/`);
             const data = await response.json();
             console.log('data', data);
             setDatas(data);

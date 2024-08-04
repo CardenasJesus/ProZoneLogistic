@@ -1,6 +1,7 @@
 import { UpdateModalClientes } from "./modales/modal";
 import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { APIBASE } from "../../js/urls";
 
 const PedClientes = ({Datas}) => {
     const [open, setOpen] = useState(false);
@@ -24,7 +25,7 @@ const PedClientes = ({Datas}) => {
         
         const statusToSend = updatedStatuses[index];
         
-        fetch(`http://127.0.0.1:8000/v1/api/clients/update/status/${Datas[index].id}/`, {
+        fetch(`${APIBASE}v1/api/clients/update/status/${Datas[index].id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

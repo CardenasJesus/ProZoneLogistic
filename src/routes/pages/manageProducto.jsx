@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import SideBar from "../../components/sidebar";
 import ManagePedidos from "../../components/productos/manageProduct"
 import {CreateModal} from "../../components/productos/modales/modal"
+import { APIBASE } from "../../js/urls";
 
 const ManageProductos = () =>{
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -11,7 +12,7 @@ const ManageProductos = () =>{
     const handleCloseProducto = () => setOpenC(false);
     const getProductos = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/v1/api/products/');
+            const response = await fetch(`${APIBASE}v1/api/products/`);
             const data = await response.json();
             setDatas(data);
         }

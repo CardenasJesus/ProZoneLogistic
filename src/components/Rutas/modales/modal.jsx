@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import { useEffect,useState } from 'react';
 import toast from 'react-hot-toast';
+import { APIBASE } from '../../../js/urls';
 
 
 const style = {
@@ -138,7 +139,7 @@ const UpdateModalRutas = ({open, handleClose, selectedRoute}) => {
         console.log(formsData);
         try {
             // http://127.0.0.1:8000/v1/api/routes/update/${selectedRoute.id}/
-            const response = await fetch(`http://127.0.0.1:8000/v1/api/routes/update/${selectedRoute.id}/`, {
+            const response = await fetch(`${APIBASE}v1/api/routes/update/${selectedRoute.id}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -426,7 +427,7 @@ const CreateModalRutas = ({ openRutas, handleCloseRutas, getRutas}) => {
       
         console.log(formsData);
         // http://127.0.0.1:8000/v1/api/routes/register/
-        fetch('http://127.0.0.1:8000/v1/api/routes/register/', {
+        fetch(`${APIBASE}v1/api/routes/register/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -501,7 +502,7 @@ const CreateModalRutas = ({ openRutas, handleCloseRutas, getRutas}) => {
                                         type="text"
                                         name='destino'
                                         value={destino}
-                                        placeholder='13th Av Street'
+                                        placeholder='El Refugio 23223 Tijuana Baja California'
                                         onChange={(e) => {handleInputChange(e); handlePatterns(e)}}
                                         id="destino"
                                         className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
@@ -516,7 +517,7 @@ const CreateModalRutas = ({ openRutas, handleCloseRutas, getRutas}) => {
                                         type="text"
                                         name='distancia'
                                         value={distancia}
-                                        placeholder='12 km' 
+                                        placeholder='12' 
                                         onChange={(e) => {handleInputChange(e), handlePatterns(e)}}
                                         id="distancia"
                                         className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "

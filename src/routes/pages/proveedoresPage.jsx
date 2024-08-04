@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import SideBar from '../../components/sidebar';
 import ManageProveedores from '../../components/proveedores/manageProveedores';
 import { CreateModalProv } from '../../components/proveedores/modales/modal';
+import { APIBASE } from '../../js/urls';
 const ProveedoresPage = () =>{
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [datas, setDatas] = useState([]);
@@ -11,7 +12,7 @@ const ProveedoresPage = () =>{
     const getProveedores = async () => {
         try {
             // http://127.0.0.1:8000/v1/api/proveedores
-            const response = await fetch('http://127.0.0.1:8000/v1/api/proveedores/ ');
+            const response = await fetch(`${APIBASE}v1/api/proveedores/`);
             const data = await response.json();
             console.log('data', data);
             setDatas(data);

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import SideBar from '../../components/sidebar';
 import Colabs from '../../components/colaboradores/colabs';
 import { CreateModal} from "../../components/colaboradores/modales/modal";
+import {APIBASE} from '../../js/urls';
 const AdministrarColab = () =>{
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [datas, setDatas] = useState([]);
@@ -10,7 +11,7 @@ const AdministrarColab = () =>{
     const handleCloseCreate = () => setOpenC(false);
     const getUsers = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/v1/api/employees/');
+            const response = await fetch(`${APIBASE}v1/api/employees/`);
             const data = await response.json();
             console.log('data', data);
             setDatas(data);

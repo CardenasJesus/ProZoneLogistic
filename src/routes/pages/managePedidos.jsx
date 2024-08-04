@@ -33,9 +33,7 @@ const ManagePedidos = () => {
        <section className={`p-4 mt-20 transition-all duration-300 ${isSidebarOpen ? 'sm:ml-52' : 'sm:ml-0'}`} >
          <div className='flex justify-center content-center items-center'>
          <PedPedidos />
-         
          </div>
-        
        </section>
        </>
     )}

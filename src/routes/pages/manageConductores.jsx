@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import SideBar from "../../components/sidebar";
 import ConductoresManage from "../../components/conductores/ConcudctoresManage";
 import {CreateModalConductores} from "../../components/conductores/modales/modal";
+import { APIBASE } from "../../js/urls";
 
 const ManageConductores = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -12,7 +13,7 @@ const ManageConductores = () => {
     const getConductores = async () => {
         try {
             // http://127.0.0.1:8000/v1/api/drivers/
-            const response = await fetch('http://127.0.0.1:8000/v1/api/drivers/');
+            const response = await fetch(`${APIBASE}v1/api/drivers/`);
             const data = await response.json();
             console.log('data', data);
             setConductores(data);

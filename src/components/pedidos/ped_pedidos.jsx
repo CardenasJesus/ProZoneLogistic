@@ -10,6 +10,7 @@ import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import toast, { Toaster } from "react-hot-toast";
+import { APIBASE } from "../../js/urls";
 
 const PedPedidos = () => {
     const [descripcion, setDescripcion] = useState('');
@@ -27,6 +28,34 @@ const PedPedidos = () => {
     const [observaciones, setObservaciones] = useState('');
     const [ruta, setRuta] = useState([]);
     const [clientes, setClientes] = useState([]);
+    const [detallesPedido, setDetallesPedido] = useState([]);
+    const calculateTotalPedido = () => {
+        return detallesPedido.reduce((total, detalle) => total + parseFloat(detalle.precio_total || 0), 0).toFixed(2);
+    };
+    const handleAddDetalle = () => {
+        const nuevoDetalle = {
+            prducto: selectedProduct,
+            cantidad,
+            precio_unitario: precio,
+            precio_total: total,
+        };
+        
+        setDetallesPedido([...detallesPedido, nuevoDetalle]);
+        setCantidad('');
+        setTotal('');
+        setSelectedProduct('');
+    };
+    const handleDetalleChange = (index, event) => {
+        const { name, value } = event.target;
+        const newDetalles = [...detallesPedido];
+        newDetalles[index] = { ...newDetalles[index], [name]: value };
+        setDetallesPedido(newDetalles);
+    };
+    
+    const handleRemoveDetalle = (index) => {
+        setDetallesPedido(detallesPedido.filter((_, i) => i !== index));
+    };
+    
     const [formData, setFormData] = useState({
         pedido : {
             precio_unitario: '',
@@ -118,7 +147,7 @@ const PedPedidos = () => {
                 }
             }}
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/v1/api/pedidos/cliente/')
+        axios.get(`${APIBASE}v1/api/pedidos/cliente/`)
             .then((response) => {
                 setClientes(response.data);
             })
@@ -126,7 +155,7 @@ const PedPedidos = () => {
                 console.error(error);
             });
 
-        axios.get('http://127.0.0.1:8000/v1/api/pedidos/producto/')
+        axios.get(`${APIBASE}v1/api/pedidos/producto/`)
             .then((response) => {
                 setProducto(response.data);
             })
@@ -134,7 +163,7 @@ const PedPedidos = () => {
                 console.error(error);
             });
 
-        axios.get('http://127.0.0.1:8000/v1/api/pedidos/conductor/')
+        axios.get(`${APIBASE}v1/api/pedidos/conductor/`)
             .then((response) => {
                 setConductor(response.data);
             })
@@ -142,7 +171,7 @@ const PedPedidos = () => {
                 console.error(error);
             });
 
-        axios.get('http://127.0.0.1:8000/v1/api/pedidos/rutas/')
+        axios.get(`${APIBASE}v1/api/pedidos/rutas/`)
             .then((response) => {
                 setRuta(response.data);
             })
@@ -192,10 +221,11 @@ const PedPedidos = () => {
     const createPedido = async (e) => {
         e.preventDefault();
         const user = JSON.parse(localStorage.getItem('user'));
+        const totalPedido = calculateTotalPedido();
         const ReorganizatedData =  {
             pedido: {
                 precio_unitario: precio,
-                precio_total: total,
+                precio_total: totalPedido,
                 descripcion: formData.descripcion,
                 calle: formData.calle,
                 num_exterior: formData.num_exterior,
@@ -206,12 +236,7 @@ const PedPedidos = () => {
                 fecha_pedido: dayjs().format('YYYY-MM-DD'),
                 status: 1,
             },
-            detalle_pedido: {
-                prducto: selectedProduct,
-                cantidad: cantidad,
-                precio_unitario: precio,
-                precio_total: total,
-            },
+            detalle_pedido: detallesPedido,
             envio: {
                 descripcion: formData.descripcion_envio,
                 fecha_envio: dayjs().format('YYYY-MM-DD'),
@@ -225,7 +250,7 @@ const PedPedidos = () => {
         }
         console.log('formattedData', ReorganizatedData);
         try {
-            const response = await fetch('http://127.0.0.1:8000/v1/api/crear_pedido/', {
+            const response = await fetch(`${APIBASE}v1/api/crear_pedido/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -255,27 +280,26 @@ const PedPedidos = () => {
             <div className="bg-gray-100 shadow-md rounded-bl-2xl rounded-tr-2xl w-full text-center"><h1 className="font-bold text-2xl  sm:text-4xl p-4 text-gray-600">Crear Pedidos</h1></div>
                 <nav className="bg-gray-100 shadow-xl rounded-2xl p-8 mt-4">
                     <form onSubmit={createPedido}>
+                        <h1 className="py-2  mt-4 mb-4 font-bold text-3xl text-center text-gray-500 ">Datos de ubicacion</h1>
                         <div>
-                            <label htmlFor="descripcion" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripcion</label>
+                            <label htmlFor="descripcion" className="block mb-2 text-sm font-medium text-gray-900 ">Descripcion</label>
                             <textarea rows={2} type="text" name="descripcion" value={descripcion} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} id="descripcion" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Una descripcion corta" required />
                         </div>
-                        <h1 className="py-2  mt-4 mb-4 font-bold text-3xl text-center text-blue-500 ">Datos de ubicacion</h1>
-
                         <div className="grid gap-6 mb-6 md:grid-cols-2">
                             <div>
-                                <label htmlFor="calle" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Calle</label>
+                                <label htmlFor="calle" className="block mb-2 text-sm font-medium text-gray-900 ">Calle</label>
                                 <input type="text" id="calle" name="calle" value={calle} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Calle Adolfo Lopez Mateos" required />
                             </div>
                             <div>
-                                <label htmlFor="num_exterior" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Numero Exterior</label>
+                                <label htmlFor="num_exterior" className="block mb-2 text-sm font-medium text-gray-900 ">Numero Exterior</label>
                                 <input type="text" id="num_exterior" maxLength={5} name="num_exterior"  value={num_exterior} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="23223" required />
                             </div>  
                             <div>
-                                <label htmlFor="colonia" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Colonia</label>
+                                <label htmlFor="colonia" className="block mb-2 text-sm font-medium text-gray-900">Colonia</label>
                                 <input type="text" id="colonia" name="colonia"  value={colonia} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Col El Refugio" required />
                             </div>
                             <div>
-                                <label htmlFor="codigo_postal" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Codigo Postal</label>
+                                <label htmlFor="codigo_postal" className="block mb-2 text-sm font-medium text-gray-900 ">Codigo Postal</label>
                                 <input type="text" id="codigo_postal" maxLength={5} name="codigo_postal"  value={codigo_postal} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="22409" required />
                             </div>
                             <div className="col-span-2">
@@ -290,7 +314,7 @@ const PedPedidos = () => {
                                 </select>
                             </div>
                         </div>
-                        <h1 className="py-2 mt-4 mb-4 font-bold text-3xl text-center text-blue-500 ">Detalles del pedido</h1>
+                        <h1 className="py-2 mt-4 mb-4 font-bold text-3xl text-center text-gray-500 ">Detalles del pedido</h1>
                         <div className="mb-6">
                                 <label htmlFor="producto" className="block mb-2 text-sm font-medium text-gray-900 ">Seleccione el producto</label>
                                 <select id="producto" name="prducto" onChange={handleProductChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
@@ -304,21 +328,36 @@ const PedPedidos = () => {
                         </div> 
                         <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-8">
                             <div className="mb-6">
-                                <label htmlFor="cantidad" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cantidad</label>
-                                <input type="text" id="cantidad" name="cantidad"  value={cantidad}  onChange={handleCantidadChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="23" required />
+                                <label htmlFor="cantidad" className="block mb-2 text-sm font-medium text-gray-900 ">Cantidad</label>
+                                <input type="text" id="cantidad" name="cantidad"  value={cantidad}  onChange={handleCantidadChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="23"  />
                             </div> 
                             <div className="mb-6">
-                                <label htmlFor="precio" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio Unitario</label>
-                                <input type="text" id="precio" name="precio_unitario" value={precio} onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                <label htmlFor="precio" className="block mb-2 text-sm font-medium text-gray-900 ">Precio Unitario</label>
+                                <input type="text" id="precio" name="precio_unitario" value={precio} onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  />
                             </div> 
                             <div className="mb-6">
-                                <label htmlFor="total" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio total</label>
-                                <input type="text" id="total" name="precio_total" value={total} onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
+                                <label htmlFor="total" className="block mb-2 text-sm font-medium text-gray-900 ">Precio total</label>
+                                <input type="text" id="total" name="precio_total" value={total} onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  />
                             </div> 
+                            
                         </div>
-                        <h1 className="py-2 mt-4 mb-4 font-bold text-3xl text-center text-blue-500 ">Detalles de Envio</h1>
+                        <button type="button" className="bg-gray-700 border border-gray-300 text-gray-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" onClick={handleAddDetalle}>Añadir Detalle</button>
+                        <h1 className="font-black text-2xl text-gray-500 py-4">Detalles del Pedido:</h1>
+                        <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-2 justify-center items-center text-left content-center">
+                            {detallesPedido.map((detalle, index) => (
+                                <div key={index} className=" bg-gray-100 shadow-xl p-4 border border-gray-500 rounded-xl">
+                                    <h2 className="font-bold text-xl text-gray-900">Detalle {index + 1}</h2>
+                                    <p className="text-sm font-bold text-gray-400">Producto: {detalle.prducto}</p>
+                                    <p className="text-sm font-bold text-gray-400">Cantidad: {detalle.cantidad}</p>
+                                    <p className="text-sm font-bold text-gray-400">Precio Unitario: {detalle.precio_unitario}</p>
+                                    <p className="text-sm font-bold text-red-400">Precio Total: {detalle.precio_total}</p>
+                                    <button type="button" className="bg-red-500 mt-4 w-full font-medium text-gray-200" onClick={() => handleRemoveDetalle(index)}>Eliminar</button>
+                                </div>
+                            ))}
+                        </div>
+                        <h1 className="py-2 mt-4 mb-4 font-bold text-3xl text-center text-gray-500 ">Detalles de Envio</h1>
                         <div className="mb-6">
-                                <label htmlFor="descripcion" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripcion del envio</label>
+                                <label htmlFor="descripcion" className="block mb-2 text-sm font-medium text-gray-900 ">Descripcion del envio</label>
                                 <textarea type="text" id="descripcion"  value={descripcionEnvio} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} name="descripcion_envio" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="Una descripcion breve..." required />
                             </div> 
                         <div className="mb-6">
@@ -333,12 +372,12 @@ const PedPedidos = () => {
                                 </select>
                         </div> 
                         <div className="mb-6">
-                                <label htmlFor="observaciones" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Observaciones</label>
+                                <label htmlFor="observaciones" className="block mb-2 text-sm font-medium text-gray-900">Observaciones</label>
                                 <input type="text" id="observaciones" name="observaciones"  value={observaciones} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="Entregar en horario laboral" required />
                             </div>
                         <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
                         <div className='w-full flex flex-col justify-center text-center items-center'>
-                                <label htmlFor="producto" className="block  text-sm font-medium text-gray-900 dark:text-white">Fecha de entrega: </label>
+                                <label htmlFor="producto" className="block  text-sm font-medium text-gray-900 ">Fecha de entrega: </label>
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DemoContainer className="rounded-3xl w-full" components={['DatePicker']}>
                                         <DatePicker
@@ -371,7 +410,7 @@ const PedPedidos = () => {
                             </div> 
                            
                         </div>
-                        <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                        <button type="submit" className="text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm mt-8 px-5 py-2.5 text-center">Submit</button>
                     </form>
 
                 </nav>

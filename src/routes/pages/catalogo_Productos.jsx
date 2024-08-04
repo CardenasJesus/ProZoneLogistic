@@ -3,6 +3,7 @@ import SideBar from '../../components/sidebar';
 import ProductsCard from '../../components/productos/productscard';
 import FiltrosCategoria from '../../components/productos/components/filtros_categoria';
 import toast, { Toaster } from 'react-hot-toast';
+import { APIBASE } from '../../js/urls';
 
 const CatalogoProductos = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -10,7 +11,7 @@ const CatalogoProductos = () => {
 
     const getProductos = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/v1/api/products/');
+            const response = await fetch(`${APIBASE}v1/api/products/`);
             const data = await response.json();
             setDatas(data);
         }
@@ -23,7 +24,7 @@ const CatalogoProductos = () => {
       }, []);
     const getProductosCategoria = async (categoria) => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/v1/api/producto_categorias/${categoria}/`);
+        const response = await fetch(`${APIBASE}v1/api/producto_categorias/${categoria}/`);
         const data = await response.json();
         if (data.length === 0) {
             toast.error('No hay productos en esta categoría');

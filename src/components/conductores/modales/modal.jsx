@@ -5,6 +5,7 @@ import Fade from '@mui/material/Fade';
 import { useEffect,useState } from 'react';
 import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
+import { APIBASE } from '../../../js/urls';
 
 
 
@@ -116,7 +117,7 @@ const UpdateModalConductores = ({open, handleCloseConductorUpd, selectedConducto
         console.log(formsData);
         try {
             // http://127.0.0.1:8000/v1/api/drivers/update/${selectedConductor.id}/
-            const response = await fetch(`http://127.0.0.1:8000/v1/api/drivers/update/${selectedConductor.id}/`, {
+            const response = await fetch(`${APIBASE}v1/api/drivers/update/${selectedConductor.id}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -392,7 +393,7 @@ const CreateModalConductores = ({ openC, handleCloseConductor, getConductores}) 
         e.preventDefault();
       
         console.log(formsData);
-        fetch('http://127.0.0.1:8000/v1/api/drivers/register/', {
+        fetch(`${APIBASE}v1/api/drivers/register/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -632,7 +633,7 @@ const AsignarVehiculoModal = ({open, handleCloseConductorUpd, selectedConductor,
             fecha_asignacion: formsData.fecha_asignacion ? dayjs(formsData.fecha_asignacion).format('YYYY-MM-DD') : '',
         };
         console.log(formattedData);
-        fetch('http://127.0.0.1:8000/v1/api/vehicles/condutor/', {
+        fetch(`'${APIBASE}v1/api/vehicles/condutor/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

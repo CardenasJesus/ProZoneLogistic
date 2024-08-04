@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import { useEffect,useState } from 'react';
 import toast from 'react-hot-toast';
+import { APIBASE } from '../../../js/urls';
 
 
 const style = {
@@ -100,7 +101,7 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
         e.preventDefault();
         console.log(formsData);
         try {
-            const response = await fetch(`http://127.0.0.1:8000/v1/api/clients/update/${selectedUser.id}/`, {
+            const response = await fetch(`${APIBASE}v1/api/clients/update/${selectedUser.id}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -333,7 +334,7 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
         e.preventDefault();
       
         console.log(formsData);
-        fetch('http://127.0.0.1:8000/v1/api/clients/register', {
+        fetch(`${APIBASE}v1/api/clients/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

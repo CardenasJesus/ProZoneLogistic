@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import SideBar from '../../components/sidebar';
 import ManageVehiculos from '../../components/vehiculos/manageVehiculos'
 import {CreateModalVehiculo} from '../../components/vehiculos/modales/modal'
+import { APIBASE } from '../../js/urls';
 
 const VehiculosPage = () =>{
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -12,7 +13,7 @@ const VehiculosPage = () =>{
     const getVehiculos = async () => {
         try {
             // http://127.0.0.1:8000/v1/api/vehicles/
-            const response = await fetch('http://127.0.0.1:8000/v1/api/vehicles/');
+            const response = await fetch(`${APIBASE}v1/api/vehicles/`);
             const data = await response.json();
             console.log('data', data);
             setDatas(data);

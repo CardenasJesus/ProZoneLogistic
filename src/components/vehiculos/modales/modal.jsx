@@ -10,6 +10,7 @@ import { useEffect,useState } from 'react';
 import TextField from '@mui/material/TextField';
 import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
+import { APIBASE } from '../../../js/urls';
 
 
 
@@ -102,7 +103,7 @@ const UpdateModalVehiculo = ({open, handleClose, selectedVehiculo}) => {
         console.log(formsData);
         try {
             // http://127.0.0.1:8000/v1/api/vehicles/update/${selectedVehiculo.id}/
-            const response = await fetch(`http://127.0.0.1:8000/v1/api/vehicles/update/${selectedVehiculo.id}/`, {
+            const response = await fetch(`${APIBASE}v1/api/vehicles/update/${selectedVehiculo.id}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -308,7 +309,7 @@ const CreateModalVehiculo = ({ openVehiculo, handleCloseVehiculo, getVehiculos})
             ...formsData,
             fecha_fabricacion: formsData.fecha_fabricacion ? dayjs(formsData.fecha_fabricacion).format('YYYY-MM-DD') : '',
         };
-        fetch('http://127.0.0.1:8000/v1/api/vehicles/register/', {
+        fetch(`${APIBASE}v1/api/vehicles/register/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

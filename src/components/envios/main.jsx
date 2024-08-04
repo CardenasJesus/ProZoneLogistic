@@ -5,6 +5,7 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import BeenhereIcon from '@mui/icons-material/Beenhere';
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { APIBASE } from "../../js/urls";
 
 const ITEMS_PER_PAGE = 5; // Ajusta el número según tus necesidades
 
@@ -30,7 +31,7 @@ const Main = () =>{
     };
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/v1/api/envios/entregados')
+        axios.get(`${APIBASE}v1/api/envios/entregados`)
         .then(response => {
             setEnvios(response.data);
         })

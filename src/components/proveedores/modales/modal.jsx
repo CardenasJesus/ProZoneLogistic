@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import { useEffect,useState } from 'react';
 import toast from 'react-hot-toast';
+import { APIBASE } from '../../../js/urls';
 
 
 const style = {
@@ -95,7 +96,7 @@ const UpdateModalProv = ({open, handleClose, selectedProveedores}) => {
       const sendUpdUser = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://127.0.0.1:8000/v1/api/proveedores/update/${selectedProveedores.id}/`, {
+            const response = await fetch(`${APIBASE}v1/api/proveedores/update/${selectedProveedores.id}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -301,7 +302,7 @@ const CreateModalProv = ({ openProv, handleCloseProveedor, getProveedores}) => {
         console.log(formsData);
     
         try {
-            const response = await fetch('http://127.0.0.1:8000/v1/api/proveedores/register', {
+            const response = await fetch(`${APIBASE}v1/api/proveedores/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

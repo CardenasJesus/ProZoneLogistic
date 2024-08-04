@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { UpdateModalRutas  } from "./modales/modal";
 import { Toaster, toast } from "react-hot-toast";
+import { APIBASE } from '../../js/urls';
 
 const ManageRutas = ({Rutas}) =>{
     const [open, setOpen] = useState(false);
@@ -24,7 +25,7 @@ const ManageRutas = ({Rutas}) =>{
         
         const statusToSend = updatedStatuses[index];
         
-        fetch(`http://127.0.0.1:8000/v1/api/routes/update/status/${Rutas[index].id}/`, {
+        fetch(`${APIBASE}v1/api/routes/update/status/${Rutas[index].id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

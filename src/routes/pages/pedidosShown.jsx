@@ -1,6 +1,7 @@
 import HistorialPed from "../../components/pedidos/historialPed";
 import SideBar from "../../components/sidebar";
 import { useEffect, useState } from "react";
+import { APIBASE } from "../../js/urls";
 const PedidosShown = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [datas, setDatas] = useState([]);
@@ -9,7 +10,7 @@ const PedidosShown = () => {
     const getHistorial = async () => {
         try {
             // http://127.0.0.1:8000/v1/api/pedidos/
-            const response = await fetch('http://127.0.0.1:8000/v1/api/pedidos/');
+            const response = await fetch(`${APIBASE}v1/api/pedidos/`);
             const data = await response.json();
             setDatas(data);
             setLoading(false);

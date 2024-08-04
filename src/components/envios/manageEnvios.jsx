@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable'; // Para tablas, si es necesario
+import { APIBASE } from "../../js/urls";
 
 const ITEMS_PER_PAGE = 6; // Ajusta el número según tus necesidades
 
@@ -31,7 +32,7 @@ const ManageEnvios = () => {
     };
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/v1/api/envios/')
+        axios.get(`${APIBASE}v1/api/envios/`)
         .then(response => {
             setEnvios(response.data);
             setLoading(false);

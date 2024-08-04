@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { APIBASE } from './urls';
 
-const API_URL = 'http://127.0.0.1:8000/v1/api/token/';
+const API_URL = `${APIBASE}v1/api/token/`;
 
 export const LoginFunc = async (username, password) => {
     try {

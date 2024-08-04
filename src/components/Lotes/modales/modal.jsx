@@ -11,6 +11,7 @@ import TextField from '@mui/material/TextField';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { APIBASE } from '../../../js/urls';
 
 
 const style = {
@@ -238,7 +239,7 @@ const UpdateModalLotes = ({open, handleClose, selectedLotes}) => {
             }
         }}
         const getAlmacenes = () => {
-            axios.get('http://127.0.0.1:8000/v1/api/almacen/')
+            axios.get(`${APIBASE}v1/api/almacen/`)
                 .then((response) => {
                     console.log(response.data);
                     setAlmacenes(response.data);
@@ -275,7 +276,7 @@ const UpdateModalLotes = ({open, handleClose, selectedLotes}) => {
         e.preventDefault();
         try {
             // http://127.0.0.1:8000/v1/api/lotes/update/${selectedLotes.id}/
-            const response = await fetch(`http://127.0.0.1:8000/v1/api/lotes/update/${selectedLotes.id}/`, {
+            const response = await fetch(`${APIBASE}v1/api/lotes/update/${selectedLotes.id}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -459,7 +460,7 @@ const CreateModalLotes = ({ openLot, handleCloseLotes, getLotes}) => {
 
     
     const getAlmacenes = () => {
-        axios.get('http://127.0.0.1:8000/v1/api/almacen/')
+        axios.get(`${APIBASE}v1/api/almacen/`)
             .then((response) => {
                 console.log(response.data);
                 setAlmacenes(response.data);
@@ -470,7 +471,7 @@ const CreateModalLotes = ({ openLot, handleCloseLotes, getLotes}) => {
     };
 
     const getProveedor = () => {
-        axios.get('http://127.0.0.1:8000/v1/api/proveedor')
+        axios.get(`${APIBASE}v1/api/proveedor`)
             .then((response) => {
                 console.log(response.data);
                 setProveedores(response.data);
@@ -481,7 +482,7 @@ const CreateModalLotes = ({ openLot, handleCloseLotes, getLotes}) => {
     };
 
     const getProductos = () => {
-        axios.get('http://127.0.0.1:8000/v1/api/productos/')
+        axios.get(`${APIBASE}v1/api/productos/`)
             .then((response) => {
                 console.log(response.data);
                 setProductos(response.data);
@@ -580,7 +581,7 @@ const CreateModalLotes = ({ openLot, handleCloseLotes, getLotes}) => {
             };
             console.log('formattedData', formattedData);
             try {
-                const response = await fetch('http://127.0.0.1:8000/v1/api/lotes/register', {
+                const response = await fetch(`${APIBASE}v1/api/lotes/register`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

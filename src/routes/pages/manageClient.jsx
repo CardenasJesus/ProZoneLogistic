@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import SideBar from '../../components/sidebar';
 import PedClientes from '../../components/clientes/ped_clientes';
 import { CreateModalClientes } from '../../components/clientes/modales/modal';
+import { APIBASE } from '../../js/urls';
 const ManageClients = () =>{
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [datas, setDatas] = useState([]);
@@ -10,7 +11,7 @@ const ManageClients = () =>{
     const handleCloseCreateClient = () => setOpenC(false);
     const getClients = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/v1/api/clients/');
+            const response = await fetch(`${APIBASE}v1/api/clients/`);
             const data = await response.json();
             console.log('data', data);
             setDatas(data);

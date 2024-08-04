@@ -1,13 +1,14 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { APIBASE } from "../../../js/urls";
 
 const FiltrosCategoria = ({getProductosCategoria, getProductos}) => {
     const [categorias, setCategorias] = useState([]);
 
     const getCategorias = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/v1/api/categorias/');
+            const response = await axios.get(`${APIBASE}v1/api/categorias/`);
             setCategorias(response.data);
         }
         catch (error) {

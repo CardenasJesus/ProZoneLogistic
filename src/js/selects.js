@@ -1,7 +1,8 @@
 import axios from "axios"
+import { APIBASE } from "./urls"
 
 const getAlmacenes = () =>{
-    const response = axios.get('http://127.0.0.1:8000/v1/api/almacen/')
+    const response = axios.get(`${APIBASE}v1/api/almacen/`)
     .then((response) => {
         return response.data
     })
@@ -10,7 +11,7 @@ const getAlmacenes = () =>{
     })
 }
 const getProveedores = () =>{
-    const response = axios.get('http://127.0.0.1:8000/v1/api/proveedor')
+    const response = axios.get(`${APIBASE}v1/api/proveedor`)
     .then((response) => {
         return response.data
     })
@@ -19,7 +20,7 @@ const getProveedores = () =>{
     })
 }
 const getProductos = () =>{
-    const response = axios.get('http://127.0.0.1:8000/v1/api/productos/')
+    const response = axios.get(`${APIBASE}v1/api/productos/`)
     .then((response) => {
         return response.data
     })

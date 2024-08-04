@@ -1,6 +1,7 @@
 import {useState } from "react";
 import { UpdateModal, } from "./modales/modal";
 import { Toaster } from "react-hot-toast";
+import { APIIMAGES } from "../../js/urls";
 const ManagePedidos = ({productos}) =>{
     const [open, setOpen] = useState(false);
     const [selectProducto, setSelectProducto] = useState({});
@@ -76,7 +77,7 @@ const ManagePedidos = ({productos}) =>{
                                             ${data.precio_producto}
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                        <img src={`http://127.0.0.1:8000${data.imagen_producto}`} className="w-24 items-center" alt="..." />
+                                        <img src={`${APIIMAGES}${data.imagen_producto}`} className="w-24 items-center" alt="..." />
                                         </td>
                                         <td className="px-6 py-4 grid grid-cols-1 justify-center items-center text-center content-center">
                                             <div className="">

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { APIBASE } from '../js/urls';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -31,7 +32,7 @@ const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(formData);  // Verifica los datos que se están enviando
-        axios.post('http://127.0.0.1:8000/v1/api/employees/register/', formData, {
+        axios.post(`${APIBASE}v1/api/employees/register/`, formData, {
             headers: {
                 'Content-Type': 'application/json'
             }

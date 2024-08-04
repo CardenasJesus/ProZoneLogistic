@@ -2,6 +2,7 @@ import axios from "axios";
 import { UpdateModalConductores,AsignarVehiculoModal } from "./modales/modal";
 import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { APIBASE } from "../../js/urls";
 
 const ConductoresManage = ({Conductores}) => {
     const [open, setOpen] = useState(false);
@@ -15,7 +16,7 @@ const ConductoresManage = ({Conductores}) => {
     const handleCloseVehiculoAsignar = () => setOpenVA(false);
 
     const getVehiculos = () => {
-        axios.get('http://127.0.0.1:8000/v1/api/vehicles/asign/')
+        axios.get(`${APIBASE}v1/api/vehicles/asign/`)
          .then((response) => {
                 setVehiculos(response.data);
             })
@@ -42,7 +43,7 @@ const ConductoresManage = ({Conductores}) => {
         
         const statusToSend = updatedStatuses[index];
         // http://127.0.0.1:8000/v1/api/clients/update/status/${Conductores[index].id}/
-        fetch(`http://127.0.0.1:8000/v1/api/drivers/update/status/${Conductores[index].id}/`, {
+        fetch(`${APIBASE}v1/api/drivers/update/status/${Conductores[index].id}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
