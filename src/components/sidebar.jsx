@@ -127,26 +127,7 @@ const SideBar = ({toggleSidebar, isSidebarOpen}) => {
                                                 Inicio
                                             </Link>
                                         </li>
-                                        <li>
-                                            <Link
-                                                to={"/dashboard"}
-                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
-                                                role="menuitem"
-                                                id='MenuItem'
-                                            >
-                                                Configuracion
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link
-                                                to={"/dashboard"}
-                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
-                                                role="menuitem"
-                                                id='itemMenu'
-                                            >
-                                                Earnings
-                                            </Link>
-                                        </li>
+                                        
                                         <li>
                                             <dt onClick={Logout} 
                                                 className="bg-transparent w-full cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
@@ -355,12 +336,6 @@ const SideBar = ({toggleSidebar, isSidebarOpen}) => {
                             </div>
                         </li>                        
                     </ul>
-                    <div className='w-full fixed bottom-0 text-gray-800'>
-                            <dt className='flex items-center w-full p-2 text-gray-900 rounded-lg bg-transparent hover:bg-gray-100 hover:text-purple-300 cursor-pointer '>
-                                <SettingsIcon sx={{width: '22px'}}/>
-                                <span className='text-lg font-bold ms-3'>Settings</span>
-                            </dt>
-                        </div>
                 </div>
             </aside>
         </>

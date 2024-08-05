@@ -88,3 +88,21 @@ button:focus-visible {
   position: fixed;
   z-index: -1;
 }
+
+.chart-container {
+  width: 100%;
+  margin: 0 auto; /* Centrar el contenedor horizontalmente */
+  padding: 20px; /* Espacio interno para evitar que la gráfica esté pegada a los bordes */
+  box-sizing: border-box; /* Incluye el padding en el ancho total */
+}
+
+/* Asegúrate de que la gráfica se vea bien en pantallas pequeñas */
+@media (max-width: 768px) {
+  .chart-container {
+    padding: 10px; /* Menos espacio en pantallas pequeñas */
+  }
+
+  .recharts-tooltip-wrapper {
+    font-size: 12px; /* Tamaño de fuente más pequeño para herramientas en pantallas pequeñas */
+  }
+} 
