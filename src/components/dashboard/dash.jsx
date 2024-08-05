@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar } from 'recharts';
 import { APIBASE } from '../../js/urls';
 
 const Chart = () => {
   const [data, setData] = useState([]);
   const [data2, setData2] = useState([]);
+  const [data4, setData4] = useState([]);
   const [total, setTotal] = useState(0);
   const [desglose, setDesglose] = useState([]);
 
@@ -55,10 +57,20 @@ const Chart = () => {
         console.error("Error fetching monetary data: ", error);
       }
     };
+    const fetchData4 = async () => {
+      try {
+          const response = await fetch(`${APIBASE}v1/api/pedidos/salidas_por_categoria/`);
+          const result = await response.json();
+          setData4(result);
+      } catch (error) {
+          console.error("Error fetching data for chart by category: ", error);
+      }
+  };
 
     fetchData();
     fetchData2();
     fetchData3();
+    fetchData4();
   }, []);
 
   const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#d0ed57'];
@@ -144,8 +156,21 @@ const Chart = () => {
         </tfoot>
       </table>
     </div>
-
       </section>
+      <div className="bg-gray-100 rounded-3xl p-8 shadow-2xl border border-purple-500 w-full">
+            <h1 className='bg-gray-800 w-full text-center font-bold p-4 rounded-3xl text-white mb-8'>
+                Salidas por Categoría
+            </h1>
+            <ResponsiveContainer width="100%" height={400}>
+                <BarChart data={data4}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="categoria" tick={{ fontSize: 12 }} />
+                    <YAxis tick={{ fontSize: 12 }} />
+                    <Tooltip />
+                    <Bar dataKey="total_salida" fill="#8884d8" />
+                </BarChart>
+            </ResponsiveContainer>
+        </div>
     </>
     
   );
