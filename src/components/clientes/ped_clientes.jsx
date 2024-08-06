@@ -103,7 +103,7 @@ const PedClientes = ({Datas}) => {
                                             {data.telefono}
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            {data.direccion}
+                                            {data.calle}, {data.num_exterior}, {data.colonia}, {data.codigo_postal}
                                         </td>
                                         <td className="px-6 py-4 grid grid-cols-1 justify-center items-center text-center content-center">
                                             <div className="">

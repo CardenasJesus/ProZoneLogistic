@@ -29,6 +29,8 @@ const PedPedidos = () => {
     const [ruta, setRuta] = useState([]);
     const [clientes, setClientes] = useState([]);
     const [detallesPedido, setDetallesPedido] = useState([]);
+    const [selectedClient, setSelectedClient] = useState('');
+    
     const calculateTotalPedido = () => {
         return detallesPedido.reduce((total, detalle) => total + parseFloat(detalle.precio_total || 0), 0).toFixed(2);
     };
@@ -181,13 +183,27 @@ const PedPedidos = () => {
 
     }, []);
 
+    const handleClienteChange = (event) => {
+        const clienteId = Number(event.target.value);
+        const selected = clientes.find(cliente => cliente.id === clienteId);
+        if (selected) {
+                setSelectedClient(clienteId);
+                setCalle(selected.calle);
+                setNumExterior(selected.num_exterior);
+                setColonia(selected.colonia);
+                setCodigoPostal(selected.codigo_postal);
+        } else {
+            setSelectedClient('');
+            setCalle('');
+            setNumExterior('');
+            setColonia('');
+            setCodigoPostal('');
+        }
+    };
+
     const handleProductChange = (event) => {
         const productId = Number(event.target.value); 
-        console.log('Product ID seleccionado:', productId);
-        
         const selected = producto.find(prod => prod.id === productId);
-        console.log('Producto seleccionado:', selected);
-
         if (selected) {
             setSelectedProduct(productId);
             setPrecio(selected.precio_producto); // El precio es una cadena
@@ -196,7 +212,6 @@ const PedPedidos = () => {
             setPrecio('');
         }
     };
-
     const handleCantidadChange = (event) => {
         const cantidad = event.target.value;
         setCantidad(cantidad);
@@ -227,11 +242,11 @@ const PedPedidos = () => {
                 precio_unitario: precio,
                 precio_total: totalPedido,
                 descripcion: formData.descripcion,
-                calle: formData.calle,
-                num_exterior: formData.num_exterior,
-                colonia: formData.colonia,
-                codigo_postal: formData.codigo_postal,
-                cliente: formData.cliente,
+                calle: calle,
+                num_exterior: num_exterior,
+                colonia: colonia,
+                codigo_postal: codigo_postal,
+                cliente: selectedClient,
                 colaborador: user.empleado.id,
                 fecha_pedido: dayjs().format('YYYY-MM-DD'),
                 status: 1,
@@ -281,6 +296,17 @@ const PedPedidos = () => {
                 <nav className="bg-gray-100 shadow-xl rounded-2xl p-8 mt-4">
                     <form onSubmit={createPedido}>
                         <h1 className="py-2  mt-4 mb-4 font-bold text-3xl text-center text-gray-500 ">Datos de ubicacion</h1>
+                        <div className="col-span-2">
+                                <label htmlFor="cliente" className="block mb-2 text-sm font-medium text-gray-900 ">Seleccione al cliente del pedido</label>
+                                <select id="cliente" name="cliente" value={selectedClient} onChange={handleClienteChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                    <option disabled selected>Seleccione un Cliente del pedido</option>
+                                    {clientes.map((cliente) => (
+                                        <option key={cliente.id} value={cliente.id}>
+                                            {cliente.nombre_cliente} {cliente.apellido_cliente}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         <div>
                             <label htmlFor="descripcion" className="block mb-2 text-sm font-medium text-gray-900 ">Descripcion</label>
                             <textarea rows={2} type="text" name="descripcion" value={descripcion} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} id="descripcion" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Una descripcion corta" required />
@@ -288,31 +314,21 @@ const PedPedidos = () => {
                         <div className="grid gap-6 mb-6 md:grid-cols-2">
                             <div>
                                 <label htmlFor="calle" className="block mb-2 text-sm font-medium text-gray-900 ">Calle</label>
-                                <input type="text" id="calle" name="calle" value={calle} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Calle Adolfo Lopez Mateos" required />
+                                <input type="text" id="calle" name="calle" readOnly value={calle} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Calle Adolfo Lopez Mateos" required />
                             </div>
                             <div>
                                 <label htmlFor="num_exterior" className="block mb-2 text-sm font-medium text-gray-900 ">Numero Exterior</label>
-                                <input type="text" id="num_exterior" maxLength={5} name="num_exterior"  value={num_exterior} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="23223" required />
+                                <input type="text" id="num_exterior" maxLength={5} readOnly name="num_exterior"  value={num_exterior} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="23223" required />
                             </div>  
                             <div>
                                 <label htmlFor="colonia" className="block mb-2 text-sm font-medium text-gray-900">Colonia</label>
-                                <input type="text" id="colonia" name="colonia"  value={colonia} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Col El Refugio" required />
+                                <input type="text" readOnly id="colonia" name="colonia"  value={colonia} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Col El Refugio" required />
                             </div>
                             <div>
                                 <label htmlFor="codigo_postal" className="block mb-2 text-sm font-medium text-gray-900 ">Codigo Postal</label>
-                                <input type="text" id="codigo_postal" maxLength={5} name="codigo_postal"  value={codigo_postal} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="22409" required />
-                            </div>
-                            <div className="col-span-2">
-                                <label htmlFor="cliente" className="block mb-2 text-sm font-medium text-gray-900 ">Seleccione al cliente del pedido</label>
-                                <select id="cliente" name="cliente" onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                    <option disabled selected>Seleccione un Cliente del pedido</option>
-                                    {clientes.map((cliente) => (
-                                        <option key={cliente.id} value={cliente.id}>
-                                            {cliente.nombre_cliente}{cliente.apellido_cliente}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
+                                <input type="text"  readOnly id="codigo_postal" maxLength={5} name="codigo_postal"  value={codigo_postal} onChange={(e) =>{handleInputChange(e), handlePatterns(e)}} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="22409" required />
+                            </div> 
+                            
                         </div>
                         <h1 className="py-2 mt-4 mb-4 font-bold text-3xl text-center text-gray-500 ">Detalles del pedido</h1>
                         <div className="mb-6">
@@ -333,11 +349,11 @@ const PedPedidos = () => {
                             </div> 
                             <div className="mb-6">
                                 <label htmlFor="precio" className="block mb-2 text-sm font-medium text-gray-900 ">Precio Unitario</label>
-                                <input type="text" id="precio" name="precio_unitario" value={precio} onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  />
+                                <input type="text" id="precio" name="precio_unitario" readOnly value={precio} onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  />
                             </div> 
                             <div className="mb-6">
                                 <label htmlFor="total" className="block mb-2 text-sm font-medium text-gray-900 ">Precio total</label>
-                                <input type="text" id="total" name="precio_total" value={total} onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  />
+                                <input type="text" id="total" name="precio_total" readOnly value={total} onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"  />
                             </div> 
                             
                         </div>

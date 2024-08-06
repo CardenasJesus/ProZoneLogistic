@@ -30,7 +30,10 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
         apellido_cliente: '',
         telefono: '',
         email: '',
-        direccion: '',
+        calle: '',
+        num_exterior: '',
+        colonia: '',
+        codigo_postal: '',
         status: ''
       });
       const validateValues = (value,pattern) => {
@@ -82,7 +85,10 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
             apellido_cliente: selectedUser.apellido_cliente || '',
             telefono: selectedUser.telefono || '',
             email: selectedUser.email || '',
-            direccion: selectedUser.direccion || '',
+            calle: selectedUser.calle || '',
+            num_exterior: selectedUser.num_exterior || '',
+            colonia: selectedUser.colonia || '',
+            codigo_postal: selectedUser.codigo_postal || '',
             status: selectedUser.status || ''
           });
           setNombreCliente(selectedUser.nombre_cliente || '');
@@ -111,15 +117,15 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
     
             if (response.ok) {
                 const data = await response.json();
-                toast.success('User updated');
+                toast.success('Cliente actualizado');
                 console.log(data);
             } else {
-                toast.error('Error updating user');
+                toast.error('Erro actualizando cliente');
                 const errorData = await response.json();
                 console.error('Error data:', errorData);
             }
         } catch (error) {
-            toast.error('Error updating user');
+            toast.error(`Erro actualizando cliente: ${error}`);
             console.error('Error:', error);
         }
     }
@@ -148,7 +154,7 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
             <>
               <nav className='w-full p-4 grid grid-cols-1 h-fit'>
                 <div className='w-full flex justify-between items-baseline'>
-                  <h1 className='font-bold text-2xl text-center'>Actualizar Informacion de clientes</h1>
+                  <h1 className='font-bold text-2xl text-center text-gray-900'>Actualizar Informacion de clientes</h1>
                   <button onClick={handleClose}>
                     <svg className="w-4 h-4 bg-transparent text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m6 18 12-12M6 6l12 12" />
@@ -205,18 +211,59 @@ const UpdateModalClientes = ({open, handleClose, selectedUser}) => {
                             />
                         </div>
                     </div>
-                    <div className='mb-4'>
-                            <label htmlFor="direccion" className="block mb-2 text-sm font-medium text-gray-900 ">Direccion</label>
-                            <input
-                                type="text"
-                                name='direccion'
-                                value={formsData.direccion}
-                                onChange={handleInputChange}
-                                id="direccion"
-                                className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
-                            />
-                        </div>
-                        
+                    <h1 className='text-gray-900 text-xl font-bold py-2 w-full text-center'>Direccion</h1>
+                            <div className='mb-4 grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4'>
+                                   <div>
+                                   <label htmlFor="calle" className="block mb-2 text-sm font-medium text-gray-900 ">Calle</label>
+                                    <input
+                                        type="text"
+                                        name='calle'
+                                        placeholder='15th Av Street'
+                                        value={formsData.calle}
+                                        onChange={(e) => {handleInputChange(e)}}
+                                        id="calle"
+                                        className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                    />
+                                   </div>
+                                   <div>
+                                   <label htmlFor="num_exterior" className="block mb-2 text-sm font-medium text-gray-900 ">Numero Exterior</label>
+                                    <input
+                                        type="text"
+                                        name='num_exterior'
+                                        maxLength={5}
+                                        placeholder='23562'
+                                        value={formsData.num_exterior}
+                                        onChange={(e) => {handleInputChange(e)}}
+                                        id="num_exterior"
+                                        className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                    />
+                                   </div>
+                                   <div>
+                                   <label htmlFor="colonia" className="block mb-2 text-sm font-medium text-gray-900 ">Colonia</label>
+                                    <input
+                                        type="text"
+                                        name='colonia'
+                                        placeholder='El Rosal'
+                                        value={formsData.colonia}
+                                        onChange={(e) => {handleInputChange(e)}}
+                                        id="colonia"
+                                        className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                    />
+                                   </div>
+                                   <div>
+                                   <label htmlFor="codigo_postal" className="block mb-2 text-sm font-medium text-gray-900 ">Codigo Postal</label>
+                                    <input
+                                        type="text"
+                                        name='codigo_postal'
+                                        maxLength={5}
+                                        placeholder='codigo_postal'
+                                        value={formsData.codigo_postal}
+                                        onChange={(e) => {handleInputChange(e)}}
+                                        id="codigo_postal"
+                                        className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                    />
+                                   </div>
+                                </div>
                         <div className='mb-6 '>
                         <div className=''>
                             <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 ">Asigne un status</label>
@@ -320,8 +367,11 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
         apellido_cliente: '',
         telefono: '',
         email: '',
-        direccion: '',
-        status: false,
+        calle: '',
+        num_exterior: '',
+        colonia: '',
+        codigo_postal: '',
+        status: true,
       });
       const handleInputChange = (e) => {
         e.preventDefault();
@@ -346,18 +396,17 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
             response.json()
             }else{
                 (error => {
-                    throw error || 'Error Creating user'
+                    throw error || 'Error al crear Cliente'
                 })
             }
         })
         .then(data => {
             console.log(data);
-            toast.success('User created successfully')
+            toast.success('Cliente Creado Correctamente')
             getClients();
         })
         .catch(error => {
-            console.log('error', error);
-            toast.error('Error creating user')
+            toast.error(`Error al crear Cliente ${error}`)
         })  
     }
 
@@ -421,16 +470,54 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
                                 </div>
                                
                             </div>
-                            <div className='mb-4'>
-                                    <label htmlFor="direccion" className="block mb-2 text-sm font-medium text-gray-900 ">Direccion</label>
+                            <h1 className='text-gray-900 text-xl font-bold py-2 w-full text-center'>Direccion</h1>
+                            <div className='mb-4 grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4'>
+                                   <div>
+                                   <label htmlFor="calle" className="block mb-2 text-sm font-medium text-gray-900 ">Calle</label>
                                     <input
                                         type="text"
-                                        name='direccion'
+                                        name='calle'
                                         placeholder='15th Av Street'
                                         onChange={(e) => {handleInputChange(e)}}
-                                        id="lastname"
+                                        id="calle"
                                         className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
                                     />
+                                   </div>
+                                   <div>
+                                   <label htmlFor="num_exterior" className="block mb-2 text-sm font-medium text-gray-900 ">Numero Exterior</label>
+                                    <input
+                                        type="text"
+                                        name='num_exterior'
+                                        maxLength={5}
+                                        placeholder='23562'
+                                        onChange={(e) => {handleInputChange(e)}}
+                                        id="num_exterior"
+                                        className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                    />
+                                   </div>
+                                   <div>
+                                   <label htmlFor="colonia" className="block mb-2 text-sm font-medium text-gray-900 ">Colonia</label>
+                                    <input
+                                        type="text"
+                                        name='colonia'
+                                        placeholder='El Rosal'
+                                        onChange={(e) => {handleInputChange(e)}}
+                                        id="colonia"
+                                        className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                    />
+                                   </div>
+                                   <div>
+                                   <label htmlFor="codigo_postal" className="block mb-2 text-sm font-medium text-gray-900 ">Codigo Postal</label>
+                                    <input
+                                        type="text"
+                                        name='codigo_postal'
+                                        maxLength={5}
+                                        placeholder='codigo_postal'
+                                        onChange={(e) => {handleInputChange(e)}}
+                                        id="codigo_postal"
+                                        className="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                    />
+                                   </div>
                                 </div>
                             <div className='mb-2'>
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
