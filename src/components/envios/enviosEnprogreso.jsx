@@ -55,7 +55,7 @@ const EnviosPendientes = () =>{
     
     return(
         <>
-        <div className="bg-gray-100 p-4 rounded-2xl shadow-xl mt-12"><h1 className="font-bold text-2xl sm:text-4xl p-2 tracking-tighter">En Progreso ({Envios.length})</h1></div>
+        <div className="bg-gray-100 p-4 rounded-2xl shadow-xl mt-12"><h1 className="font-bold text-2xl sm:text-4xl p-2 tracking-tighter text-gray-900">En Progreso ({Envios.length})</h1></div>
        <section>
         <nav className="grid  lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 mt-8">
         {paginatedEnvios.map((envio) => (
@@ -136,7 +136,7 @@ const EnviosPendientes = () =>{
                     onClick={() => goToPage(currentPage - 1)}
                     disabled={currentPage === 1}
                 >
-                    <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7"/>
                     </svg>
                 </button>
@@ -154,7 +154,7 @@ const EnviosPendientes = () =>{
                     onClick={() => goToPage(currentPage + 1)}
                     disabled={currentPage === totalPages}
                 >
-                   <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                   <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7"/>
                     </svg>
                 </button>

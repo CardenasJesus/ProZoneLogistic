@@ -23,10 +23,9 @@ const ProductsCard = ({Datas}) => {
         >
                 <img src={`${APIIMAGES}${data.imagen_producto}`} className="w-24 items-center" alt="..." />
                 <dt className="bg-blue-400 w-full flex justify-center rounded-bl-3xl rounded-tr-3xl  p-2"><h5 className="text-gray-200 font-semibold p-2 text-xl">{data.nombre_producto}</h5></dt>
-                <dt className="py-2"><span className="font-bold text-base">Descripcion:</span><p className="text-gray-900 text-lg py-2">{data.descripcion_producto}</p></dt>
-               <dt className="py-2"> <span className="font-bold text-base">Peso por producto:</span><p className="text-gray-900">{data.peso_producto} kG</p></dt>
-               <dt className="py-2"> <span className="font-bold text-base">Precio Unitario</span><p className="text-gray-900">${data.precio_producto}</p></dt>
-                <a href="#" className="btn btn-primary mb-8">Ver más</a>
+                <dt className="py-2"><span className="font-bold text-base text-gray-900">Descripcion:</span><p className="text-gray-900 text-lg py-2">{data.descripcion_producto}</p></dt>
+               <dt className="py-2"> <span className="font-bold text-base text-gray-900">Peso por producto:</span><p className="text-gray-900">{data.peso_producto} kG</p></dt>
+               <dt className="py-2"> <span className="font-bold text-base text-gray-900">Precio Unitario</span><p className="text-gray-900">${data.precio_producto}</p></dt>
             </div>
          ))}
         </section>

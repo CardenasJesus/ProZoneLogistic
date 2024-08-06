@@ -149,15 +149,15 @@ const UpdateModalRutas = ({open, handleClose, selectedRoute}) => {
     
             if (response.ok) {
                 const data = await response.json();
-                toast.success('User updated');
+                toast.success('Route updated');
                 console.log(data);
             } else {
-                toast.error('Error updating user');
+                toast.error('Error updating Route');
                 const errorData = await response.json();
                 console.error('Error data:', errorData);
             }
         } catch (error) {
-            toast.error('Error updating user');
+            toast.error('Error updating Route');
             console.error('Error:', error);
         }
     }
@@ -186,7 +186,7 @@ const UpdateModalRutas = ({open, handleClose, selectedRoute}) => {
             <>
               <nav className='w-full p-4 grid grid-cols-1 h-fit'>
                 <div className='w-full flex justify-between items-baseline'>
-                  <h1 className='font-bold text-2xl text-center'>Actualizar Informacion de clientes</h1>
+                  <h1 className='font-bold text-2xl text-center'>Actualizar Informacion de la Ruta</h1>
                   <button onClick={handleClose}>
                     <svg className="w-4 h-4 bg-transparent text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m6 18 12-12M6 6l12 12" />
@@ -224,7 +224,7 @@ const UpdateModalRutas = ({open, handleClose, selectedRoute}) => {
                             </div>
                             <div className='grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-2'>
                             <div className='mb-4'>
-                                    <label htmlFor="distancia" className="block mb-2 text-sm font-medium text-gray-900 ">Distancia</label>
+                                    <label htmlFor="distancia" className="block mb-2 text-sm font-medium text-gray-900 ">Distancia Aprox</label>
                                     <input
                                         type="text"
                                         name='distancia'
@@ -474,7 +474,7 @@ const CreateModalRutas = ({ openRutas, handleCloseRutas, getRutas}) => {
                     <>
                     <nav className='w-full p-4 grid grid-cols-1'>
                         <div className='w-full flex justify-between mb-4'>
-                        <h1 className='font-bold text-2xl text-center text-gray-900'>Crear Cuenta de colaboradro</h1>
+                        <h1 className='font-bold text-2xl text-center text-gray-900'>Crear Ruta</h1>
                         <button onClick={handleCloseRutas}>
                             <svg className="w-4 h-4 text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m6 18 12-12M6 6l12 12" />

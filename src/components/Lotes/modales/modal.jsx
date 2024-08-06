@@ -84,7 +84,7 @@ const DetailsModal = ({openD, handleCloseDetail, selectedLotes}) =>{
                                         <nav className='flex justify-center items-center text-center'>
                                             <div>
                                             <h1 className='font-bold text-sm text-center mb-2'>Almacen</h1>
-                                                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
                                                     <thead className="text-xs text-gray-200 uppercase bg-gray-500 ">
                                                     <tr>
                                                     <th scope="col" className="px-6 py-3">
@@ -97,7 +97,7 @@ const DetailsModal = ({openD, handleCloseDetail, selectedLotes}) =>{
                                                     </thead>
                                                     <tbody>
                                                     <tr className="bg-gray-200 border-b ">
-                                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                                         {selectedLotes.almacen?.id}
                                                         </th>
                                                         <td className="px-6 py-4 text-gray-500">
@@ -138,7 +138,7 @@ const DetailsModal = ({openD, handleCloseDetail, selectedLotes}) =>{
                                         <nav className='flex justify-center items-center text-center col-span-2'>
                                             <div>
                                             <h1 className='font-bold text-sm text-center'>Producto</h1>
-                                            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                            <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
                                                     <thead className="text-xs text-gray-200 uppercase bg-gray-500">
                                                     <tr>
                                                     <th scope="col" className="px-6 py-3">
@@ -395,9 +395,9 @@ const UpdateModalLotes = ({open, handleClose, selectedLotes}) => {
                                </div>
                                <div className='mb-4 w-full '>
                                 <div>
-                                        <label htmlFor="almacenes" className="block mb-4 text-sm font-medium text-gray-900 dark:text-white">Almacen: </label>
+                                        <label htmlFor="almacenes" className="block mb-4 text-sm font-medium text-gray-900 ">Almacen: </label>
                                     <select id="almacenes" name="almacen"
-                                    onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                                     <option disabled selected>Seleccione un Almacen</option>
                                     {almacenes.map((almacen) => (
                                         <option key={almacen.id} value={almacen.id}>
@@ -698,7 +698,7 @@ const CreateModalLotes = ({ openLot, handleCloseLotes, getLotes}) => {
                                </div>
                                <div className='mb-4 w-full grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-4 '>
                                 <div className='w-full'>
-                                <label htmlFor="producto" className="block  text-sm font-medium text-gray-900 dark:text-white">Fecha de Vencimiento: </label>
+                                <label htmlFor="producto" className="block  text-sm font-medium text-gray-900 ">Fecha de Vencimiento: </label>
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DemoContainer components={['DatePicker']}>
                                         <DatePicker
@@ -719,9 +719,9 @@ const CreateModalLotes = ({ openLot, handleCloseLotes, getLotes}) => {
                                     </LocalizationProvider>
                                 </div>
                                 <div>
-                                        <label htmlFor="almacenes" className="block mb-4 text-sm font-medium text-gray-900 dark:text-white">Almacen: </label>
+                                        <label htmlFor="almacenes" className="block mb-4 text-sm font-medium text-gray-900">Almacen: </label>
                                     <select id="almacenes" name="almacen"
-                                    onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                                     <option disabled selected>Seleccione un Almacen</option>
                                     {almacenes.map((almacen) => (
                                         <option key={almacen.id} value={almacen.id}>
@@ -733,8 +733,8 @@ const CreateModalLotes = ({ openLot, handleCloseLotes, getLotes}) => {
                             </div>
                             <div className='mb-4 w-full grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-4 '>
                                 <div className='w-full'>
-                                <label htmlFor="proveedores" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Proveedor: </label>
-                                    <select id="proveedores"  name="proveedor" onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <label htmlFor="proveedores" className="block mb-2 text-sm font-medium text-gray-900 ">Proveedor: </label>
+                                    <select id="proveedores"  name="proveedor" onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                                         <option disabled selected>Seleccione un Proveedor</option>
                                         {proveedores.map((proveedor) => (
                                             <option key={proveedor.id} value={proveedor.id}>
@@ -744,8 +744,8 @@ const CreateModalLotes = ({ openLot, handleCloseLotes, getLotes}) => {
                                     </select>
                                 </div>
                                 <div className='w-full'>
-                                    <label htmlFor="producto" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Producto: </label>
-                                    <select id="producto"  name="producto"  onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <label htmlFor="producto" className="block mb-2 text-sm font-medium text-gray-900 ">Producto: </label>
+                                    <select id="producto"  name="producto"  onChange={handleInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                                         <option  disabled selected>¿De que producto es el lote?</option>
                                         {productos.map((producto) => (
                                         <option key={producto.id} value={producto.id}>

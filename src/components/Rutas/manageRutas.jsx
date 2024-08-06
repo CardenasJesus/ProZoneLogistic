@@ -64,7 +64,7 @@ const ManageRutas = ({Rutas}) =>{
         reverseOrder={false}
         />
           <section className="w-full">
-            <div className="bg-green-500 shadow-md rounded-bl-2xl rounded-tr-2xl w-fit"><h1 className="font-bold text-2xl p-4 text-gray-100">Gestionar Clientes</h1></div>
+            <div className="bg-green-500 shadow-md rounded-bl-2xl rounded-tr-2xl w-fit"><h1 className="font-bold text-2xl p-4 text-gray-100">Gestionar Rutas</h1></div>
             <div className="p-4">
                 <div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">

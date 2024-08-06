@@ -321,18 +321,18 @@ const CreateModalVehiculo = ({ openVehiculo, handleCloseVehiculo, getVehiculos})
             response.json()
             }else{
                 (error => {
-                    throw error || 'Error updating user'
+                    throw error || 'Error updating Vehicle'
                 })
             }
         })
         .then(data => {
             console.log(data);
-            toast.success('User created successfully')
+            toast.success('Vehicle created successfully')
             getVehiculos();
         })
         .catch(error => {
             console.log('error', error);
-            toast.error('Error creating user')
+            toast.error('Error creating Vehicle')
         })  
     }
 
@@ -356,7 +356,7 @@ const CreateModalVehiculo = ({ openVehiculo, handleCloseVehiculo, getVehiculos})
                     <>
                     <nav className='w-full p-4 grid grid-cols-1'>
                         <div className='w-full flex justify-between mb-4'>
-                        <h1 className='font-bold text-2xl text-center text-gray-900'>Crear Cuenta de colaboradro</h1>
+                        <h1 className='font-bold text-2xl text-center text-gray-900'>Agregar Vehiculo</h1>
                         <button onClick={handleCloseVehiculo}>
                             <svg className="w-4 h-4 text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m6 18 12-12M6 6l12 12" />
@@ -428,7 +428,7 @@ const CreateModalVehiculo = ({ openVehiculo, handleCloseVehiculo, getVehiculos})
                                 </select>
                             </div>
                                 <div className='w-full'>
-                                <label htmlFor="fecha_fabricacion" className="block  text-sm font-medium text-gray-900 dark:text-white">Fecha de Fabricacion: </label>
+                                <label htmlFor="fecha_fabricacion" className="block  text-sm font-medium text-gray-900 ">Fecha de Fabricacion: </label>
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DemoContainer components={['DatePicker']}>
                                         <DatePicker

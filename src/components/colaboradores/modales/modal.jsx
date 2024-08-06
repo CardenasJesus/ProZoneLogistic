@@ -63,15 +63,15 @@ const UpdateModal = ({open, handleClose, selectedUser}) => {
             response.json()
             }else{
                 (error => {
-                    throw error || 'Error updating user'
+                    throw error || 'Error updating Colaborador'
                 })
             }
         })
         .then(data => {
-            toast.success('User updated')
+            toast.success('Colaborador updated')
         })
         .catch(error => {
-            toast.error('Error updating user')
+            toast.error('Error updating Colaborador')
             console.log('error', error);
         })  
     }
@@ -343,7 +343,7 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
                         <form onSubmit={handleSubmit} className="w-full p-4">
                             <div className='w-full grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mb-4 '>
                                 <div>
-                                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">First Name</label>
+                                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">Nombre</label>
                                     <input
                                         type="text"
                                         name='nombre'
@@ -355,7 +355,7 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-gray-900 ">Last name</label>
+                                    <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-gray-900 ">Apellido</label>
                                     <input
                                         type="text"
                                         name='apellido'
@@ -470,7 +470,7 @@ const CreateModal = ({ openC, handleCloseC, getUsers}) => {
                                         ></path>
                                         </svg>
                                     </div>
-                                    <p className="translate-x-2">Create </p>
+                                    <p className="translate-x-2">Crear </p>
                                     </button>
 
                             </div>

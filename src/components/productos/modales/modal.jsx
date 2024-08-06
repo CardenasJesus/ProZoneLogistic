@@ -106,7 +106,7 @@ const UpdateModal = ({open, handleClose, selectProducto}) => {
             <>
               <nav className='w-full p-4 grid grid-cols-1 h-fit'>
                 <div className='w-full flex justify-between items-baseline'>
-                  <h1 className='font-bold text-2xl text-center'>Actualizar usuario</h1>
+                  <h1 className='font-bold text-2xl text-center'>Actualizar Producto</h1>
                   <button onClick={handleClose}>
                     <svg className="w-4 h-4 bg-transparent text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m6 18 12-12M6 6l12 12" />
@@ -117,7 +117,7 @@ const UpdateModal = ({open, handleClose, selectProducto}) => {
                   <form onSubmit={sendUpdProduct} className="w-full p-4">
                     <div className='w-full grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4'>
                         <div>
-                        <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">First Name</label>
+                        <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">Producto Nombre</label>
                         <input
                             type="text"
                             name='nombre_producto'
@@ -128,7 +128,7 @@ const UpdateModal = ({open, handleClose, selectProducto}) => {
                         />
                         </div>
                         <div>
-                        <label htmlFor="descripcion" className="block mb-2 text-sm font-medium text-gray-900 ">Last Name</label>
+                        <label htmlFor="descripcion" className="block mb-2 text-sm font-medium text-gray-900 ">Descripcion del producto</label>
                         <input
                             type="text"
                             name='descripcion_producto'
@@ -326,7 +326,7 @@ const CreateModal = ({ openC, handleCloseProducto, getProductos}) => {
                     <>
                     <nav className='w-full p-4 grid grid-cols-1'>
                         <div className='w-full flex justify-between mb-4'>
-                        <h1 className='font-bold text-2xl text-center text-gray-900'>Crear Cuenta de colaboradro</h1>
+                        <h1 className='font-bold text-2xl text-center text-gray-900'>Crear Producto</h1>
                         <button onClick={handleCloseProducto}>
                             <svg className="w-4 h-4 text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m6 18 12-12M6 6l12 12" />

@@ -162,13 +162,13 @@ const ManageEnvios = () => {
     };
     return (
         <>
-        <div className="bg-gray-100 p-4 rounded-2xl shadow-xl"><h1 className="font-bold text-2xl sm:text-4xl p-2 tracking-tighter">Envios Generados ({Envios.length})</h1></div>
+        <div className="bg-gray-100 p-4 rounded-2xl shadow-xl"><h1 className="font-bold text-2xl sm:text-4xl p-2 tracking-tighter text-gray-900">Envios Generados ({Envios.length})</h1></div>
         <nav className="mt-12 flex space-x-2">            
-            <p className="flex  text-xs justify-start items-center content-center"><span className="bg-blue-500 inline-block center w-2 h-2 rounded-full mr-4"></span> Estado Actual</p>   
+            <p className="flex  text-xs justify-start items-center content-center text-gray-900"><span className="bg-blue-500 inline-block center w-2 h-2 rounded-full mr-4"></span> Estado Actual</p>   
             <span className="font-semibold text-md mx-2">|</span>
-            <p className="flex  text-xs justify-start items-center content-center"><span className="bg-green-500 inline-block center w-2 h-2 rounded-full mr-4"></span> Estado Completado </p>                       
+            <p className="flex  text-xs justify-start items-center content-center text-gray-900"><span className="bg-green-500 inline-block center w-2 h-2 rounded-full mr-4"></span> Estado Completado </p>                       
             <span className="font-semibold text-md mx-2">|</span>
-            <p className="flex  text-xs justify-start items-center content-center"><span className="bg-gray-500 inline-block center w-2 h-2 rounded-full mr-4"></span> Estado Siguiente</p>       
+            <p className="flex  text-xs justify-start items-center content-center text-gray-900"><span className="bg-gray-500 inline-block center w-2 h-2 rounded-full mr-4"></span> Estado Siguiente</p>       
         </nav>
        <section>
         <nav className="grid  lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 mt-8">
@@ -222,7 +222,7 @@ const ManageEnvios = () => {
                             className="fixed top-0 right-0 bg-transparent"
                             onClick={() => handleExport(envio)}
                         >
-                            <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" strokeLinejoin="round" strokeWidth="2" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
                             </svg>
                         </button>
@@ -262,7 +262,7 @@ const ManageEnvios = () => {
                     onClick={() => goToPage(currentPage - 1)}
                     disabled={currentPage === 1}
                 >
-                    <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7"/>
                     </svg>
                 </button>
@@ -280,7 +280,7 @@ const ManageEnvios = () => {
                     onClick={() => goToPage(currentPage + 1)}
                     disabled={currentPage === totalPages}
                 >
-                   <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                   <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7"/>
                     </svg>
                 </button>

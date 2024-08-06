@@ -346,7 +346,7 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
             response.json()
             }else{
                 (error => {
-                    throw error || 'Error updating user'
+                    throw error || 'Error Creating user'
                 })
             }
         })
@@ -385,7 +385,7 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
                     <>
                     <nav className='w-full p-4 grid grid-cols-1'>
                         <div className='w-full flex justify-between mb-4'>
-                        <h1 className='font-bold text-2xl text-center text-gray-900'>Crear Cuenta de colaboradro</h1>
+                        <h1 className='font-bold text-2xl text-center text-gray-900'>Crear Cliente</h1>
                         <button onClick={handleCloseC}>
                             <svg className="w-4 h-4 text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m6 18 12-12M6 6l12 12" />
@@ -396,7 +396,7 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
                         <form onSubmit={handleSubmit} className="w-full p-4">
                             <div className='w-full grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mb-4 '>
                                 <div>
-                                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">First Name</label>
+                                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 ">Nombre</label>
                                     <input
                                         type="text"
                                         name='nombre_cliente'
@@ -408,7 +408,7 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-gray-900 ">Last name</label>
+                                    <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-gray-900 ">Apellido</label>
                                     <input
                                         type="text"
                                         name='apellido_cliente'
@@ -494,7 +494,7 @@ const CreateModalClientes = ({ openC, handleCloseC, getClients}) => {
                                         ></path>
                                         </svg>
                                     </div>
-                                    <p className="translate-x-2">Create </p>
+                                    <p className="translate-x-2">Crear </p>
                                     </button>
 
                             </div>

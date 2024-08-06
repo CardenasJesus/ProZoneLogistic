@@ -91,8 +91,7 @@ const ConductoresManage = ({Conductores}) => {
         reverseOrder={false}
         />
           <section className="w-full">
-            <div className="bg-green-500 shadow-md rounded-bl-2xl rounded-tr-2xl w-fit"><h1 className="font-bold text-2xl p-4 text-gray-100">Gestionar Conductores</h1></div>
-            <button onClick={handleOpenVehiculoAsignar}>Asignar Vehiculo</button>
+            <div className=" w-full flex justify-around"><h1 className="font-bold text-2xl p-4 text-gray-100 bg-green-500 shadow-md rounded-bl-2xl rounded-tr-2xl">Gestionar Conductores</h1><button onClick={handleOpenVehiculoAsignar} className="bg-green-200 text-gray-900">Asignar Vehiculo</button></div>
             <div className="p-4">
                 <div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">

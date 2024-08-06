@@ -106,15 +106,15 @@ const UpdateModalProv = ({open, handleClose, selectedProveedores}) => {
     
             if (response.ok) {
                 const data = await response.json();
-                toast.success('User updated');
+                toast.success('Proveedor updated');
                 console.log(data);
             } else {
-                toast.error('Error updating user');
+                toast.error('Error updating Proveedor');
                 const errorData = await response.json();
                 console.error('Error data:', errorData);
             }
         } catch (error) {
-            toast.error('Error updating user');
+            toast.error('Error updating Proveedor');
             console.error('Error:', error);
         }
     }
@@ -143,7 +143,7 @@ const UpdateModalProv = ({open, handleClose, selectedProveedores}) => {
             <>
               <nav className='w-full p-4 grid grid-cols-1 h-fit'>
                 <div className='w-full flex justify-between items-baseline'>
-                  <h1 className='font-bold text-2xl text-center'>Actualizar Informacion de clientes</h1>
+                  <h1 className='font-bold text-2xl text-center'>Actualizar Informacion del Proveedor</h1>
                   <button onClick={handleClose}>
                     <svg className="w-4 h-4 bg-transparent text-gray-800 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m6 18 12-12M6 6l12 12" />
@@ -312,16 +312,16 @@ const CreateModalProv = ({ openProv, handleCloseProveedor, getProveedores}) => {
     
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.detail || 'Error updating user');
+                throw new Error(errorData.detail || 'Error updating Proveedor');
             }
     
             const data = await response.json();
             console.log(data);
-            toast.success('User created successfully');
+            toast.success('Proveedor created successfully');
             getProveedores();
         } catch (error) {
             console.log('error', error);
-            toast.error('Error creating user');
+            toast.error('Error creating Proveedor');
         }
     };
     return(

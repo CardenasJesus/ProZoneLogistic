@@ -91,7 +91,7 @@ const Chart = () => {
         </div>
         <div className='w-full grid lg:grid-cols-1 md:grid-cols-1 sm:grid-cols-1 gap-4'>
           <nav className='bg-gray-100 rounded-2xl shadow-2xl border border-purple-500 p-4'>
-            <h1 className='text-2xl w-full text-center mb-2 font-black'>Salida Total de productos</h1>
+            <h1 className='text-2xl w-full text-center mb-2 font-black text-gray-900'>Salida Total de productos</h1>
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
                 <Pie
@@ -109,17 +109,17 @@ const Chart = () => {
             </ResponsiveContainer>
           </nav>
           <nav className='bg-gray-100 rounded-2xl shadow-2xl border border-yellow-400 p-4'>
-            <h1 className='text-2xl w-full text-center mb-2 font-black'>Cantidad Monetaria de Salidas</h1>
-            <h2 className='text-4xl font-black mb-4 w-full text-center py-8'>Total: ${total.toFixed(2)}</h2>
+            <h1 className='text-2xl w-full text-center mb-2 font-black text-gray-900'>Cantidad Monetaria de Salidas</h1>
+            <h2 className='text-4xl font-black text-gray-900 mb-4 w-full text-center py-8'>Total: ${total.toFixed(2)}</h2>
             <p className='text-lg w-full text-center'>En una seccion mas se mirara el desgloce!!</p>
           </nav>
         </div>
       </section>
       <section className='w-full'>
-        <h1 className='p-4 mb-4 font-black bg-gray-100 mt-4 rounded-2xl shadow-2xl border border-blue-600 text-2xl'>Desgloce de total:</h1>
+        <h1 className='p-4 mb-4 font-black bg-gray-100 mt-4 rounded-2xl shadow-2xl border text-gray-900 border-blue-600 text-2xl'>Desgloce de total:</h1>
         <div className="relative overflow-x-auto p-4 mb-4 font-black bg-gray-100 mt-4 rounded-2xl shadow-2xl border border-red-600 text-2xl">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+      <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-100 ">
           <tr>
             <th scope="col" className="px-6 py-3 rounded-s-lg">
               Nombre de Producto
@@ -134,8 +134,8 @@ const Chart = () => {
         </thead>
         <tbody>
           {desglose.map((item, index) => (
-            <tr key={index} className="bg-white dark:bg-gray-800">
-              <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <tr key={index} className="bg-white ">
+              <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                 {item.prducto__nombre_producto}
               </th>
               <td className="px-6 py-4">
@@ -148,7 +148,7 @@ const Chart = () => {
           ))}
         </tbody>
         <tfoot>
-          <tr className="font-semibold text-gray-900 dark:text-white">
+          <tr className="font-semibold text-gray-900 ">
             <th scope="row" className="px-6 py-3 text-base">Total</th>
             <td className="px-6 py-3">{desglose.reduce((acc, item) => acc + item.total_cantidad, 0)}</td>
             <td className="px-6 py-3">${total.toFixed(2)}</td>
